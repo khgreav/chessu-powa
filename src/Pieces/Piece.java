@@ -1,6 +1,6 @@
 package Pieces;
 
-public abstract class  Piece {
+public abstract class Piece {
 
     public PieceColor color;
     public int row;
@@ -11,7 +11,9 @@ public abstract class  Piece {
         this.row = row;
         this.column = column;
     }
-
+    
+    public abstract bool validMovement();
+    
     public abstract String getPiece();
 
     public abstract String getCoordinates();
