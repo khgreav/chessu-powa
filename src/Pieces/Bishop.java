@@ -1,21 +1,26 @@
 package Pieces;
 
-public class Bishop extends Piece {
+public class Bishop implements Piece {
+    private PieceColor color;
+    private PieceType type;
 
-    public PieceType type;
-
-    public Bishop(PieceColor color, int row, char column) {
-        super(color, row, column);
-        this.type = PieceType.BISHOP;
+    public Bishop(PieceColor color, PieceType type) {
+        this.color = color;
+        this.type = type;
     }
 
     @Override
-    public String getPiece() {
-        return(this.color.toString().substring(0,1)+this.type.toString().substring(0,1));
+    public PieceColor getColor() {
+        return color;
     }
 
     @Override
-    public String getCoordinates() {
-        return(this.column+Integer.toString(row));
+    public PieceType getType() {
+        return type;
+    }
+
+    @Override
+    public boolean isValidMovement() {
+        return false;
     }
 }
