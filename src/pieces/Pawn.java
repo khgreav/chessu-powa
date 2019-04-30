@@ -1,4 +1,4 @@
-package Pieces;
+package pieces;
 
 public class Pawn implements Piece {
     private PieceColor color;

@@ -1,4 +1,4 @@
-package Pieces;
+package pieces;
 
 public class Knight implements Piece {
     private PieceColor color;
