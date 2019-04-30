@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="window" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Gui.MainWindowController">
+   <children>
+      <TabPane fx:id="gameTabs" layoutY="54.0" AnchorPane.topAnchor="54.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" tabClosingPolicy="ALL_TABS">
+        <tabs>
+        </tabs>
+      </TabPane>
+      <Button fx:id="newTabButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#newPanel" text="New tab" />
+   </children>
+</AnchorPane>
