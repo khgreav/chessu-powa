@@ -1,21 +1,26 @@
 package Pieces;
 
-public class Pawn extends Piece {
+public class Pawn implements Piece {
+    private PieceColor color;
+    private PieceType type;
 
-    public PieceType type;
-
-    public Pawn(PieceColor color, int row, char column) {
-        super(color, row, column);
-        this.type = PieceType.PAWN;
+    public Pawn(PieceColor color, PieceType type) {
+        this.color = color;
+        this.type = type;
     }
 
     @Override
-    public String getPiece() {
-        return(this.color.toString().substring(0,1)+this.type.toString().substring(0,1));
+    public PieceColor getColor() {
+        return color;
     }
 
     @Override
-    public String getCoordinates() {
-        return(this.column+Integer.toString(row));
+    public PieceType getType() {
+        return type;
+    }
+
+    @Override
+    public boolean isValidMovement() {
+        return false;
     }
 }
