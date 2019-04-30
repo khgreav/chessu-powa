@@ -1,4 +1,4 @@
-package pieces;
+package Pieces;
 
 public interface Piece {
     boolean isValidMovement();

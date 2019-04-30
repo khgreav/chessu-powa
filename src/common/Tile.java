@@ -1,6 +1,6 @@
 package common;
 
-import Pieces.Piece;
+import pieces.Piece;
 
 public interface Tile {
     Piece getPiece();

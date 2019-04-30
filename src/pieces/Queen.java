@@ -1,4 +1,4 @@
-package pieces;
+package Pieces;
 
 public class Queen implements Piece {
     private PieceColor color;

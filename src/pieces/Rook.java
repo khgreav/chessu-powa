@@ -1,10 +1,10 @@
 package pieces;
 
-public class Queen implements Piece {
+public class Rook implements Piece {
     private PieceColor color;
     private PieceType type;
 
-    public Queen(PieceColor color, PieceType type) {
+    public Rook(PieceColor color, PieceType type) {
         this.color = color;
         this.type = type;
     }

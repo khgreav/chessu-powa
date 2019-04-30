@@ -1,6 +1,6 @@
 package common;
 
-import Pieces.Piece;
+import pieces.Piece;
 
 public class BoardTile implements Tile {
     private int row;
