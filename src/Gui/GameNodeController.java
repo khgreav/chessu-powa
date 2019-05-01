@@ -5,6 +5,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
@@ -13,28 +14,15 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
+
 import java.awt.event.ActionEvent;
-
-class CustomEvent extends Event {
-
-    private String parameter;
-
-    public static final EventType<CustomEvent> CUSTOM = new EventType(ANY, "CUSTOM");
-
-    public CustomEvent(String parameter) {
-        super(CustomEvent.CUSTOM);
-        this.parameter = parameter;
-    }
-
-    public String getParameter() {
-        return this.parameter;
-    }
-
-}
 
 public class GameNodeController {
 
-    int moven = 0;
+    private int moven = 0;
+    private boolean clicked = false;
+
+    private String lastClicked = "";
 
     @FXML
     GridPane board = new GridPane();
@@ -54,16 +42,15 @@ public class GameNodeController {
                 final int c = j;
 
                 if ((i + j) % 2 == 0) {
-                    tile.setStyle("-fx-background-color: #999922;");
+                    tile.setStyle("-fx-background-color: #bf9a56;");
                 } else {
-                    tile.setStyle("-fx-background-color: #992299;");
+                    tile.setStyle("-fx-background-color: #a86321;");
                 }
 
                 tile.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
-
-                        printTileToHistory(moven, r, c);
+                        printTileToHistory(r, c);
                     }
                 });
 
@@ -72,34 +59,71 @@ public class GameNodeController {
         }
     }
 
-    public void printTileToHistory(int moven, int r, int c) {
-        moven++;
+    private void printTileToHistory(int r, int c) {
 
-        Button btn = new Button();
-        btn.setText(moven + ". " + r + ":" + c);
+        if (clicked) {
+            moven++;
 
-        gameHistoryContent.getChildren().add(btn);
+            ImageView img = new ImageView(new Image(getClass().getResourceAsStream("Chess_BlackPawn.png")));
+            Node n = board.getChildren().get(r*8+c);
 
-        refreshBoardGraphic();
+            img.setFitWidth(((TilePane) n).getWidth());
+            img.setFitHeight(((TilePane) n).getHeight());
+
+            ((TilePane) n).getChildren().add(img);
+
+            if (moven%2 == 0) {
+                Button btn = new Button();
+                btn.setText(moven/2 + " " + lastClicked + " " + r + ":" + c);
+                gameHistoryContent.getChildren().add(btn);
+            } else {
+                lastClicked = r + ":" + c;
+            }
+            clicked = false;
+        } else {
+            clicked = true;
+        }
     }
 
     private void refreshBoardGraphic() {
 
         board.getChildren().forEach(c -> {
-
             ImageView img = new ImageView(new Image(getClass().getResourceAsStream("Chess_BlackPawn.png")));
-            //img.setPreserveRatio(true);
+            if (c instanceof TilePane) {
+                img.setFitWidth(((TilePane) c).getWidth());
+                img.setFitHeight(((TilePane) c).getHeight());
 
-           if (c instanceof TilePane)
-               img.setFitWidth(((TilePane) c).getTileWidth());
-               img.setFitHeight(((TilePane) c).getTileHeight());
-
-            img.setFitWidth(((TilePane) c).getWidth());
-            img.setFitHeight(((TilePane) c).getHeight());
-
-               ((TilePane) c).getChildren().removeAll();
+                ((TilePane) c).getChildren().remove(0, ((TilePane) c).getChildren().size());
                 ((TilePane) c).getChildren().add(img);
-
+            }
         });
+    }
+
+    public void loadFile() {
+
+    }
+
+    public void saveFile() {
+
+    }
+
+    public void autoPlay() {
+
+    }
+
+    public void resetGame() {
+
+    }
+
+    public void pauseAutoPlay() {
+
+    }
+
+    public void prevMove() {
+
+    }
+
+    public void nextMove() {
+
     }
 }

@@ -16,7 +16,7 @@ public class testMain extends Application {
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Chess");
         Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
-        primaryStage.setScene(new Scene(root, 700, 500));
+        primaryStage.setScene(new Scene(root, 900, 700));
         MainWindowController mainWindowController = new MainWindowController();
         mainWindowController.initialize();
 
