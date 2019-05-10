@@ -1,5 +1,7 @@
 package pieces;
 
+import common.Tile;
+
 public class King implements Piece {
     private PieceColor color;
     private PieceType type;
@@ -20,7 +22,7 @@ public class King implements Piece {
     }
 
     @Override
-    public boolean isValidMovement() {
+    public boolean isValidMovement(Tile from, Tile to, Tile[][] tiles) {
         return false;
     }
 }
