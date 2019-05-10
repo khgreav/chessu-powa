@@ -1,10 +1,10 @@
-package Pieces;
+package pieces;
 
-public class King implements Piece {
+public class Knight implements Piece {
     private PieceColor color;
     private PieceType type;
 
-    public King(PieceColor color, PieceType type) {
+    public Knight(PieceColor color, PieceType type) {
         this.color = color;
         this.type = type;
     }

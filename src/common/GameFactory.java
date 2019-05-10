@@ -1,6 +1,6 @@
 package common;
 
-import Pieces.*;
+import pieces.*;
 
 public abstract class GameFactory {
     public GameFactory() {

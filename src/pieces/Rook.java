@@ -1,4 +1,4 @@
-package Pieces;
+package pieces;
 
 public class Rook implements Piece {
     private PieceColor color;
