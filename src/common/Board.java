@@ -1,7 +1,7 @@
 package common;
 
 public class Board {
-    private Tile[][] tiles;
+    public Tile[][] tiles;
 
     public Board () {
         tiles = new Tile[8][8];
@@ -18,5 +18,9 @@ public class Board {
 
     public Tile getTile(int row, int col) {
         return tiles[row][col];
+    }
+
+    public boolean move(Tile from, Tile to) {
+        return false;
     }
 }
