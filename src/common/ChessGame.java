@@ -1,5 +1,7 @@
 package common;
 
+import pieces.Piece;
+
 import java.util.Stack;
 
 public class ChessGame implements Game {
@@ -15,6 +17,18 @@ public class ChessGame implements Game {
 
     @Override
     public boolean move(Tile from, Tile to) {
+        if (from.getPiece().isValidMovement(from, to, board.tiles)) {
+            Piece movingPiece = from.getPiece();
+            Piece removedPiece = null;
+            from.removePiece();
+            if (!to.isEmpty()) {
+                removedPiece = to.getPiece();
+                to.removePiece();
+            }
+            to.putPiece(movingPiece);
+            undo.push(new BoardMove(from, to, movingPiece, removedPiece));
+            return true;
+        }
         return false;
     }
 
