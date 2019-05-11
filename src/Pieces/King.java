@@ -1,11 +1,19 @@
-package pieces;
+package Pieces;
 
-import common.Tile;
+import Common.Tile;
 
+/**
+ * Represents a King chess piece.
+ */
 public class King implements Piece {
     private PieceColor color;
     private PieceType type;
 
+    /**
+     * Creates a new King piece object.
+     * @param color piece color
+     * @param type piece type
+     */
     public King(PieceColor color, PieceType type) {
         this.color = color;
         this.type = type;

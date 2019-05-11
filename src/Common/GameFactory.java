@@ -1,12 +1,23 @@
-package common;
+package Common;
 
-import pieces.*;
+import Pieces.*;
 
+/**
+ * A class for generation of chess game.
+ */
 public abstract class GameFactory {
+    /**
+     * GameFactory constructor
+     */
     public GameFactory() {
 
     }
 
+    /**
+     * Creates instances of chess pieces and places them on their respective starting positions on the board.
+     * @param board an instance of board to populate
+     * @return game instance containing the board
+     */
     public static Game createChessGame(Board board) {
         for(int i = 0; i < 8; i++) {
             if (i == 0 || i == 7) {

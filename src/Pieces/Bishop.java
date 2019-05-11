@@ -1,11 +1,19 @@
-package pieces;
+package Pieces;
 
-import common.Tile;
+import Common.Tile;
 
+/**
+ * Represents a Bishop chess piece.
+ */
 public class Bishop implements Piece {
     private PieceColor color;
     private PieceType type;
 
+    /**
+     * Creates a new Bishop piece object.
+     * @param color piece color
+     * @param type piece type
+     */
     public Bishop(PieceColor color, PieceType type) {
         this.color = color;
         this.type = type;

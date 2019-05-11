@@ -1,6 +1,6 @@
 package Gui;
 
-import common.*;
+import Common.*;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -12,12 +12,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
-import pieces.Piece;
-import pieces.PieceColor;
+import Pieces.Piece;
+import Pieces.PieceColor;
 
 import java.util.Stack;
 
-import static pieces.PieceColor.W;
+import static Pieces.PieceColor.W;
 
 public class GameNodeController {
 
@@ -254,7 +254,7 @@ public class GameNodeController {
         for (int i = 0; i < moves.size(); i+=2) {
             String str = (i+1) + ". " + moves.elementAt(i).getFrom().toString();
 
-            if (moves.elementAt(i).getRemovedFigure() != null)
+            if (moves.elementAt(i).getRemovedPiece() != null)
                 str += "x";
 
             str += "" + moves.elementAt(i).getTo().toString();
@@ -266,7 +266,7 @@ public class GameNodeController {
             if (i+1 < moves.size()) {
                 str += " " + moves.elementAt(i+1).getFrom().toString();
 
-                if (moves.elementAt(i+1).getRemovedFigure() != null)
+                if (moves.elementAt(i+1).getRemovedPiece() != null)
                     str += "x";
 
                 str += "" + moves.elementAt(i+1).getTo().toString();

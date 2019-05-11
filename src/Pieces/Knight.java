@@ -1,11 +1,19 @@
-package pieces;
+package Pieces;
 
-import common.Tile;
+import Common.Tile;
 
+/**
+ * Represents a Knight chess piece.
+ */
 public class Knight implements Piece {
     private PieceColor color;
     private PieceType type;
 
+    /**
+     * Creates a new Knight piece object.
+     * @param color piece color
+     * @param type piece type
+     */
     public Knight(PieceColor color, PieceType type) {
         this.color = color;
         this.type = type;

@@ -1,11 +1,19 @@
-package pieces;
+package Pieces;
 
-import common.Tile;
+import Common.Tile;
 
+/**
+ * Represents a Pawn chess piece.
+ */
 public class Pawn implements Piece {
     private PieceColor color;
     private PieceType type;
 
+    /**
+     * Creates a new Pawn piece object.
+     * @param color piece color
+     * @param type piece type
+     */
     public Pawn(PieceColor color, PieceType type) {
         this.color = color;
         this.type = type;

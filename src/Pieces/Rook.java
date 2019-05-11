@@ -1,12 +1,20 @@
-package pieces;
+package Pieces;
 
-import common.Tile;
+import Common.Tile;
 
-public class Queen implements Piece {
+/**
+ * Represents a Rook chess piece.
+ */
+public class Rook implements Piece {
     private PieceColor color;
     private PieceType type;
 
-    public Queen(PieceColor color, PieceType type) {
+    /**
+     * Creates a new Rook piece object.
+     * @param color piece color
+     * @param type piece type
+     */
+    public Rook(PieceColor color, PieceType type) {
         this.color = color;
         this.type = type;
     }
@@ -59,7 +67,7 @@ public class Queen implements Piece {
         } else if (diffX != 0 && diffY == 0) { //moving left or right
             if (fromX < toX) { //moving right
                 for (int i = 1; i < diffX; i++) {
-                    Tile current = tiles[fromY][fromX + i];
+                    Tile current = tiles[fromY][fromX+i];
                     if (!current.isEmpty()) {
                         return false;
                     }
@@ -71,58 +79,8 @@ public class Queen implements Piece {
                 }
             } else { //moving left
                 for (int i = 1; i < diffX; i++) {
-                    Tile current = tiles[fromY][fromX - i];
+                    Tile current = tiles[fromY][fromX-i];
                     if (!current.isEmpty()) {
-                        return false;
-                    }
-                }
-                if (to.isEmpty()) {
-                    return true;
-                } else {
-                    return (from.getPiece().getColor() != to.getPiece().getColor());
-                }
-            }
-        } else if ((diffX == diffY) && diffX != 0) {
-            if (fromX < toX && fromY < toY) { //moving down and right
-                for (int i = 1; i < diffX; i++) {
-                    Tile current = tiles[fromY+i][fromX+i];
-                    if (!current.isEmpty()) {
-                        return false;
-                    }
-                }
-                if (to.isEmpty()) {
-                    return true;
-                } else {
-                    return (from.getPiece().getColor() != to.getPiece().getColor());
-                }
-            } else if (fromX > toX && fromY < toY) { //moving down and left
-                for (int i = 1; i < diffX; i++) {
-                    Tile current = tiles[fromY+i][fromX-i];
-                    if (!current.isEmpty()) {
-                        return false;
-                    }
-                }
-                if (to.isEmpty()) {
-                    return true;
-                } else {
-                    return (from.getPiece().getColor() != to.getPiece().getColor());
-                }
-            } else if (fromX < toX && fromY > toY) { //moving up and right
-                for (int i = 1; i < diffX; i++) {
-                    Tile current = tiles[fromY-i][fromX+i];
-                    if (!current.isEmpty()) {
-                        return false;
-                    }
-                }
-                if (to.isEmpty()) {
-                    return true;
-                } else {
-                    return (from.getPiece().getColor() != to.getPiece().getColor());
-                }
-            } else if (fromX > toX && fromY > toY) { //moving up and left
-                for (int i = 1; i < diffX; i++) {
-                    Tile current = tiles[fromY-i][fromX-i];
-                    if (!current.isEmpty()){
                         return false;
                     }
                 }
@@ -135,6 +93,5 @@ public class Queen implements Piece {
         } else {
             return false;
         }
-        return false;
     }
 }
