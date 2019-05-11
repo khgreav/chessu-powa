@@ -19,8 +19,4 @@ public class Board {
     public Tile getTile(int row, int col) {
         return tiles[row][col];
     }
-
-    public boolean move(Tile from, Tile to) {
-        return false;
-    }
 }

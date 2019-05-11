@@ -1,6 +1,8 @@
 package common;
 
 import pieces.Piece;
+import pieces.PieceColor;
+import pieces.PieceType;
 
 import java.util.Stack;
 
@@ -8,15 +10,39 @@ public class ChessGame implements Game {
     private Board board;
     private Stack<BoardMove> undo;
     private Stack<BoardMove> redo;
+    private boolean check;
 
     public ChessGame(Board board) {
         this.board = board;
         this.undo = new Stack<>();
         this.redo = new Stack<>();
+        this.check = false;
+    }
+
+    private boolean check(Tile[][] tiles, PieceColor playerTurn) {
+        Tile kingTile = null;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if ((tiles[j][i].getPiece().getType() == PieceType.KI) && (tiles[j][i].getPiece().getColor() != playerTurn)) {
+                    kingTile = tiles[j][i];
+                }
+            }
+        }
+
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (!tiles[j][i].isEmpty() && tiles[j][i].getPiece().getColor() == playerTurn) {
+                    if (tiles[j][i].getPiece().isValidMovement(tiles[j][i], kingTile, tiles)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     @Override
-    public boolean move(Tile from, Tile to) {
+    public boolean move(Tile from, Tile to, PieceColor playerTurn) {
         if (from.getPiece().isValidMovement(from, to, board.tiles)) {
             Piece movingPiece = from.getPiece();
             Piece removedPiece = null;
@@ -26,7 +52,7 @@ public class ChessGame implements Game {
                 to.removePiece();
             }
             to.putPiece(movingPiece);
-            undo.push(new BoardMove(from, to, movingPiece, removedPiece));
+            undo.push(new BoardMove(from, to, movingPiece, removedPiece, check(board.tiles, playerTurn)));
             return true;
         }
         return false;

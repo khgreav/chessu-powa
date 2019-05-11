@@ -85,7 +85,7 @@ public class GameNodeController {
             board.getChildren().get(r * 8 + c).setStyle("-fx-background-color: #12bf24;");
         } else {
             if (lastClickedTile != null) {
-                if (game.move(lastClickedTile, clickedTile)) {
+                if (game.move(lastClickedTile, clickedTile, )) {
                     refreshTilePieceGraphic();
                 }
             }

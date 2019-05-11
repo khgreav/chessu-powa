@@ -7,12 +7,14 @@ public class BoardMove {
     private Tile to;
     private Piece movingPiece;
     private Piece removedPiece;
+    private boolean check;
 
-    public BoardMove(Tile from, Tile to, Piece movingPiece, Piece removedPiece) {
+    public BoardMove(Tile from, Tile to, Piece movingPiece, Piece removedPiece, boolean check) {
         this.from = from;
         this.to = to;
         this.movingPiece = movingPiece;
         this.removedPiece = removedPiece;
+        this.check = check;
     }
 
     public Tile getFrom() {
