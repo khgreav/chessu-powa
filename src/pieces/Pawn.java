@@ -64,13 +64,21 @@ public class Pawn implements Piece {
             Piece movingPiece = from.getPiece();
             if (movingPiece.getColor() == PieceColor.W) { //white pawn
                 if (fromY - 1 == toY) { //moving up
-                    return (to.getPiece().getColor() == PieceColor.B);
+                    if (to.isEmpty()) {
+                        return true;
+                    } else {
+                        return (to.getPiece().getColor() == PieceColor.B);
+                    }
                 } else { // moving down
                     return false;
                 }
             } else { //black pawn
                 if (fromY + 1 == toY) { //moving down
-                    return (to.getPiece().getColor() == PieceColor.W);
+                    if(to.isEmpty()) {
+                        return true;
+                    } else {
+                        return (to.getPiece().getColor() == PieceColor.W);
+                    }
                 } else {
                     return false;
                 }
