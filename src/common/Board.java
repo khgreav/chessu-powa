@@ -11,7 +11,7 @@ public class Board {
     private void setTiles() {
         for(int i = 0; i < 8; i++) {
             for(int j = 0; j < 8; j++) {
-                tiles[i][j] = new BoardTile(8-i, i+1);
+                tiles[i][j] = new BoardTile(8-i, j+1);
             }
         }
     }
