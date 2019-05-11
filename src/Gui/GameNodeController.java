@@ -81,8 +81,9 @@ public class GameNodeController {
 
         if (piece != null && piece.getColor() == PieceColor.values()[turn % 2]) {
             lastClickedTile = clickedTile;
-
             board.getChildren().get(r * 8 + c).setStyle("-fx-background-color: #12bf24;");
+
+//            markTileColors(lastClickedTile);
         } else {
             if (lastClickedTile != null) {
                 if (game.move(lastClickedTile, clickedTile)) {
@@ -173,6 +174,23 @@ public class GameNodeController {
 
 
                     ((TilePane) n).getChildren().add(imageView);
+                }
+            }
+        }
+    }
+
+    private void markTileColors(Tile from) {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                Node n = board.getChildren().get(i * 8 + j);
+                if (n instanceof TilePane) {
+                    if (from.getPiece().isValidMovement(from, gameBoard.getTile(i, j), gameBoard.tiles)) {
+                        if ((i + j) % 2 == 0) {
+                            n.setStyle("-fx-background-color: #e4bf55;");
+                        } else {
+                            n.setStyle("-fx-background-color: #c37f21;");
+                        }
+                    }
                 }
             }
         }
