@@ -70,19 +70,23 @@ public class GameNodeController {
             }
         }
 
-        refreshBoardGraphic();
+        refreshTilePieceGraphic();
     }
 
     private void MovePiece(int r, int c) {
         Tile clickedTile = gameBoard.getTile(r, c);
         Piece piece = clickedTile.getPiece();
 
-        if (piece != null && piece.getColor() == PieceColor.values()[turn%2]){
+        refreshTileColors();
+
+        if (piece != null && piece.getColor() == PieceColor.values()[turn % 2]) {
             lastClickedTile = clickedTile;
+
+            board.getChildren().get(r * 8 + c).setStyle("-fx-background-color: #12bf24;");
         } else {
             if (lastClickedTile != null) {
                 if (game.move(lastClickedTile, clickedTile)) {
-                    refreshBoardGraphic();
+                    refreshTilePieceGraphic();
                 }
             }
 
@@ -134,13 +138,14 @@ public class GameNodeController {
         }
     }
 
-    private void refreshBoardGraphic() {
+    private void refreshTilePieceGraphic() {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 Node n = board.getChildren().get(i * 8 + j);
                 if (n instanceof TilePane) {
                     Piece p = gameBoard.getTile(i, j).getPiece();
 
+                    ((TilePane) n).getChildren().remove(0, ((TilePane) n).getChildren().size());
                     if (p == null)
                         continue;
 
@@ -166,13 +171,27 @@ public class GameNodeController {
                     imageView.setX((imageView.getFitWidth() - w) / 2);
                     imageView.setY((imageView.getFitHeight() - h) / 2);
 
-                    ((TilePane) n).getChildren().remove(0, ((TilePane) n).getChildren().size());
+
                     ((TilePane) n).getChildren().add(imageView);
                 }
             }
         }
     }
 
+    private void refreshTileColors() {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                Node n = board.getChildren().get(i * 8 + j);
+                if (n instanceof TilePane) {
+                    if ((i + j) % 2 == 0) {
+                        n.setStyle("-fx-background-color: #bf9a56;");
+                    } else {
+                        n.setStyle("-fx-background-color: #a86321;");
+                    }
+                }
+            }
+        }
+    }
 
     public void loadFile() {
 
