@@ -41,6 +41,11 @@ public class GameNodeController {
     @FXML
     VBox gameHistoryContent = new VBox();
 
+    /**
+     * Initializes the gameNode controller and creates own game instance.
+     * Sets the basic game layout and adds triggers for each tile in board.
+     *
+     */
     public void initialize() {
 
         gameBoard = new Board();
@@ -73,6 +78,13 @@ public class GameNodeController {
         refreshTilePieceGraphic();
     }
 
+    /**
+     * Function for checking which tile was clicked and if there is piece that can move somewhere.
+     * If clicked again when there was previous tile successfully selected. Calls Game fucntion move to move it's piece.
+     *
+     * @param r int value of row in grid
+     * @param c int value of col in grid
+     */
     private void MovePiece(int r, int c) {
         Tile clickedTile = gameBoard.getTile(r, c);
         Piece piece = clickedTile.getPiece();
@@ -86,7 +98,7 @@ public class GameNodeController {
             markTileColors(lastClickedTile);
         } else {
             if (lastClickedTile != null) {
-                if (game.move(lastClickedTile, clickedTile)) {
+                if (game.move(lastClickedTile, clickedTile, PieceColor.values()[turn % 2])) {
                     turn++;
                     refreshTilePieceGraphic();
                     refreshTileColors();
@@ -98,6 +110,12 @@ public class GameNodeController {
         }
     }
 
+    /**
+     * Simple function to get the correct image. For piece type and color.
+     *
+     * @param piece Piece value for getting the image.
+     * @return Returns image of piece.
+     */
     private Image getPieceImage(Piece piece) {
 
         if (piece.getColor() == W) {
@@ -142,6 +160,9 @@ public class GameNodeController {
         }
     }
 
+    /**
+     * Sets the picture according to piece type and color for each tile.
+     */
     private void refreshTilePieceGraphic() {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -182,6 +203,11 @@ public class GameNodeController {
         }
     }
 
+    /**
+     * Marks the tiles where the piece can move to.
+     *
+     * @param from Starting tile.
+     */
     private void markTileColors(Tile from) {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -199,6 +225,9 @@ public class GameNodeController {
         }
     }
 
+    /**
+     * Sets the basic tile colors.
+     */
     private void refreshTileColors() {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -214,17 +243,40 @@ public class GameNodeController {
         }
     }
 
+    /**
+     * Appends the list of moves to history.
+     */
     private void refreshHistory() {
         Stack<BoardMove> moves = game.getUndo();
 
         gameHistoryContent.getChildren().remove(0, gameHistoryContent.getChildren().size());
 
         for (int i = 0; i < moves.size(); i+=2) {
-            String str = (i+1) + ". " + moves.elementAt(i).getFrom().toString() + "" + moves.elementAt(i).getTo().toString();
+            String str = (i+1) + ". " + moves.elementAt(i).getFrom().toString();
+
+            if (moves.elementAt(i).getRemovedFigure() != null)
+                str += "x";
+
+            str += "" + moves.elementAt(i).getTo().toString();
+
+            if (moves.elementAt(i).isCheck()) {
+                str += "+";
+            }
 
             if (i+1 < moves.size()) {
-                str += moves.elementAt(i+1).getFrom().toString() + "" + moves.elementAt(i+1).getTo().toString();
+                str += " " + moves.elementAt(i+1).getFrom().toString();
+
+                if (moves.elementAt(i+1).getRemovedFigure() != null)
+                    str += "x";
+
+                str += "" + moves.elementAt(i+1).getTo().toString();
+
+                if (moves.elementAt(i+1).isCheck()) {
+                    str += "+";
+                }
             }
+
+
 
             Button button = new Button();
             button.setText(str);

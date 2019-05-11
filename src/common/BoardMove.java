@@ -32,4 +32,8 @@ public class BoardMove {
     public Piece getRemovedFigure() {
         return removedPiece;
     }
+
+    public boolean isCheck() {
+        return check;
+    }
 }

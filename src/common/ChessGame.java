@@ -24,9 +24,10 @@ public class ChessGame implements Game {
         Tile kingTile = null;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                if ((tiles[j][i].getPiece().getType() == PieceType.KI) && (tiles[j][i].getPiece().getColor() != playerTurn)) {
-                    kingTile = tiles[j][i];
-                }
+                if (!tiles[j][i].isEmpty())
+                    if ((tiles[j][i].getPiece().getType() == PieceType.KI) && (tiles[j][i].getPiece().getColor() != playerTurn)) {
+                        kingTile = tiles[j][i];
+                    }
             }
         }
 
@@ -84,7 +85,7 @@ public class ChessGame implements Game {
 
     @Override
     public boolean redo() {
-        if(redo.empty()) {
+        if (redo.empty()) {
             return false;
         } else {
             BoardMove redoMove = redo.pop();

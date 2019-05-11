@@ -54,6 +54,6 @@ public class BoardTile implements Tile {
 
     @Override
     public String toString() {
-        return row + "" + col;
+        return ((char)('a' + col)) + "" + (char)(('8' - row));
     }
 }
