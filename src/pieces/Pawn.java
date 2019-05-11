@@ -49,13 +49,13 @@ public class Pawn implements Piece {
             Piece movingPiece = from.getPiece();
             if (movingPiece.getColor() == PieceColor.W) { //white pawn
                 if (fromY == 6 && fromY - 2 == toY) { //pawn is in the starting position
-                    return tiles[fromX][toY+1].isEmpty() && to.isEmpty(); //both tiles are empty
+                    return tiles[toY+1][fromX].isEmpty() && to.isEmpty(); //both tiles are empty
                 } else {
                     return false;
                 }
             } else { //black pawn
                 if (fromY == 1 && fromY + 2 == toY) { //pawn is in the starting position
-                    return tiles[fromX][toY-1].isEmpty() && to.isEmpty(); //both tiles are empty
+                    return tiles[toY-1][fromX].isEmpty() && to.isEmpty(); //both tiles are empty
                 } else {
                     return false;
                 }

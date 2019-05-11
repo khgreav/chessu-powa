@@ -33,7 +33,7 @@ public class Rook implements Piece {
         if (diffX == 0 && diffY != 0) { //moving up or down
             if (fromY < toY) { //moving down
                 for (int i = 1; i < diffY; i++) {
-                    Tile current = tiles[fromX][fromY + i];
+                    Tile current = tiles[fromY + i][fromX];
                     if (!current.isEmpty()) { //fields between from and to are not empty
                         return false;
                     }
@@ -45,7 +45,7 @@ public class Rook implements Piece {
                 }
             } else { //moving up
                 for (int i = 1; i < diffY; i++) {
-                    Tile current = tiles[fromX][fromY - i];
+                    Tile current = tiles[fromY - i][fromX];
                     if (!current.isEmpty()) {
                         return false;
                     }
@@ -59,7 +59,7 @@ public class Rook implements Piece {
         } else if (diffX != 0 && diffY == 0) { //moving left or right
             if (fromX < toX) { //moving right
                 for (int i = 1; i < diffX; i++) {
-                    Tile current = tiles[fromX+i][fromY];
+                    Tile current = tiles[fromY][fromX+i];
                     if (!current.isEmpty()) {
                         return false;
                     }
@@ -71,7 +71,7 @@ public class Rook implements Piece {
                 }
             } else { //moving left
                 for (int i = 1; i < diffX; i++) {
-                    Tile current = tiles[fromX-i][fromY];
+                    Tile current = tiles[fromY][fromX-i];
                     if (!current.isEmpty()) {
                         return false;
                     }
