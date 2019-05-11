@@ -69,7 +69,7 @@ public class Bishop implements Piece {
                 }
             } else if (fromX > toX && fromY > toY) { //moving up and left
                 for (int i = 1; i < diffX; i++) {
-                    Tile current = tiles[fromY-i][fromY-i];
+                    Tile current = tiles[fromY-i][fromX-i];
                     if (!current.isEmpty()){
                         return false;
                     }

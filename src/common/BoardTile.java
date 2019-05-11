@@ -51,4 +51,9 @@ public class BoardTile implements Tile {
     public int getRow() {
         return row;
     }
+
+    @Override
+    public String toString() {
+        return row + "" + col;
+    }
 }

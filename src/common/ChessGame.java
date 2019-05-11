@@ -9,6 +9,7 @@ import java.util.Stack;
 public class ChessGame implements Game {
     private Board board;
     private Stack<BoardMove> undo;
+
     private Stack<BoardMove> redo;
     private boolean check;
 
@@ -39,6 +40,11 @@ public class ChessGame implements Game {
             }
         }
         return false;
+    }
+
+    @Override
+    public Stack<BoardMove> getUndo() {
+        return undo;
     }
 
     @Override

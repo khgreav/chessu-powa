@@ -65,7 +65,7 @@ public class Pawn implements Piece {
             if (movingPiece.getColor() == PieceColor.W) { //white pawn
                 if (fromY - 1 == toY) { //moving up
                     if (to.isEmpty()) {
-                        return true;
+                        return false;
                     } else {
                         return (to.getPiece().getColor() == PieceColor.B);
                     }
@@ -75,7 +75,7 @@ public class Pawn implements Piece {
             } else { //black pawn
                 if (fromY + 1 == toY) { //moving down
                     if(to.isEmpty()) {
-                        return true;
+                        return false;
                     } else {
                         return (to.getPiece().getColor() == PieceColor.W);
                     }
