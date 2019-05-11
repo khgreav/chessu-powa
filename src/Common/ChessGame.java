@@ -73,6 +73,9 @@ public class ChessGame implements Game {
      */
     @Override
     public boolean move(Tile from, Tile to, PieceColor playerTurn) {
+        if (!to.isEmpty() && to.getPiece().getType() == PieceType.KI) {
+            return false;
+        }
         if (from.getPiece().isValidMovement(from, to, board.tiles)) {
             Piece movingPiece = from.getPiece();
             Piece removedPiece = null;
