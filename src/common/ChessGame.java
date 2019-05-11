@@ -7,12 +7,18 @@ import java.util.Stack;
 public class ChessGame implements Game {
     private Board board;
     private Stack<BoardMove> undo;
+
     private Stack<BoardMove> redo;
 
     public ChessGame(Board board) {
         this.board = board;
         this.undo = new Stack<>();
         this.redo = new Stack<>();
+    }
+
+    @Override
+    public Stack<BoardMove> getUndo() {
+        return undo;
     }
 
     @Override

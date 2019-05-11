@@ -1,12 +1,10 @@
 package Gui;
 
-import common.Board;
-import common.Game;
-import common.GameFactory;
-import common.Tile;
+import common.*;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -16,6 +14,8 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import pieces.Piece;
 import pieces.PieceColor;
+
+import java.util.Stack;
 
 import static pieces.PieceColor.W;
 
@@ -83,11 +83,14 @@ public class GameNodeController {
             lastClickedTile = clickedTile;
             board.getChildren().get(r * 8 + c).setStyle("-fx-background-color: #12bf24;");
 
-//            markTileColors(lastClickedTile);
+            markTileColors(lastClickedTile);
         } else {
             if (lastClickedTile != null) {
                 if (game.move(lastClickedTile, clickedTile)) {
+                    turn++;
                     refreshTilePieceGraphic();
+                    refreshTileColors();
+                    refreshHistory();
                 }
             }
 
@@ -208,6 +211,25 @@ public class GameNodeController {
                     }
                 }
             }
+        }
+    }
+
+    private void refreshHistory() {
+        Stack<BoardMove> moves = game.getUndo();
+
+        gameHistoryContent.getChildren().remove(0, gameHistoryContent.getChildren().size());
+
+        for (int i = 0; i < moves.size(); i+=2) {
+            String str = (i+1) + ". " + moves.elementAt(i).getFrom().toString() + "" + moves.elementAt(i).getTo().toString();
+
+            if (i+1 < moves.size()) {
+                str += moves.elementAt(i+1).getFrom().toString() + "" + moves.elementAt(i+1).getTo().toString();
+            }
+
+            Button button = new Button();
+            button.setText(str);
+
+            gameHistoryContent.getChildren().add(button);
         }
     }
 
