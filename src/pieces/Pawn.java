@@ -33,13 +33,13 @@ public class Pawn implements Piece {
         if (diffX == 0 && diffY == 1) { //move by one tile forward
             Piece movingPiece = from.getPiece();
             if (movingPiece.getColor() == PieceColor.W) { //white pawn
-                if (fromY + 1 == toY) { //moving up
+                if (fromY - 1 == toY) { //moving up
                     return to.isEmpty();
                 } else {
                     return false;
                 }
             } else { //black pawn
-                if (fromY - 1 == toY) { //moving down
+                if (fromY + 1 == toY) { //moving down
                     return to.isEmpty();
                 } else {
                     return false;
@@ -48,14 +48,14 @@ public class Pawn implements Piece {
         } else if (diffX == 0 && diffY == 2) { //move by two tiles forward
             Piece movingPiece = from.getPiece();
             if (movingPiece.getColor() == PieceColor.W) { //white pawn
-                if (fromY == 1 && fromY + 2 == toY) { //pawn is in the starting position
-                    return tiles[fromX][toY-1].isEmpty() && to.isEmpty(); //both tiles are empty
+                if (fromY == 6 && fromY - 2 == toY) { //pawn is in the starting position
+                    return tiles[fromX][toY+1].isEmpty() && to.isEmpty(); //both tiles are empty
                 } else {
                     return false;
                 }
             } else { //black pawn
-                if (fromY == 6 && fromY - 2 == toY) { //pawn is in the starting position
-                    return tiles[fromX][toY+1].isEmpty() && to.isEmpty(); //both tiles are empty
+                if (fromY == 1 && fromY + 2 == toY) { //pawn is in the starting position
+                    return tiles[fromX][toY-1].isEmpty() && to.isEmpty(); //both tiles are empty
                 } else {
                     return false;
                 }
@@ -63,13 +63,13 @@ public class Pawn implements Piece {
         } else if (diffX == 1 && diffY == 1) { //attack
             Piece movingPiece = from.getPiece();
             if (movingPiece.getColor() == PieceColor.W) { //white pawn
-                if (fromY + 1 == toY) { //moving up
+                if (fromY - 1 == toY) { //moving up
                     return (to.getPiece().getColor() == PieceColor.B);
                 } else { // moving down
                     return false;
                 }
             } else { //black pawn
-                if (fromY - 1 == toY) { //moving down
+                if (fromY + 1 == toY) { //moving down
                     return (to.getPiece().getColor() == PieceColor.W);
                 } else {
                     return false;
