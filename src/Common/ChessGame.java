@@ -135,8 +135,8 @@ public class ChessGame implements Game {
             return false;
         } else {
             BoardMove undoMove = undo.pop();
-            Tile original = board.getTile(undoMove.getFrom().getRow() - 1, undoMove.getFrom().getCol() - 1);
-            Tile destination = board.getTile(undoMove.getTo().getRow() - 1, undoMove.getTo().getCol() - 1);
+            Tile original = board.getTile(undoMove.getFrom().getRow(), undoMove.getFrom().getCol());
+            Tile destination = board.getTile(undoMove.getTo().getRow(), undoMove.getTo().getCol());
             destination.removePiece();
             if (undoMove.getRemovedPiece() != null) {
                 destination.putPiece(undoMove.getRemovedPiece());
@@ -157,13 +157,13 @@ public class ChessGame implements Game {
             return false;
         } else {
             BoardMove redoMove = redo.pop();
-            Tile original = board.getTile(redoMove.getFrom().getRow() - 1, redoMove.getFrom().getCol() - 1);
-            Tile destination = board.getTile(redoMove.getTo().getRow() - 1, redoMove.getTo().getCol() - 1);
-            original.removePiece();
-            if (redoMove.getRemovedPiece() != null) {
-                destination.removePiece();
-            }
-            destination.putPiece(redoMove.getMovingPiece());
+            Tile original = board.getTile(redoMove.getFrom().getRow(), redoMove.getFrom().getCol());
+            Tile destination = board.getTile(redoMove.getTo().getRow(), redoMove.getTo().getCol());
+//            original.removePiece();
+//            if (redoMove.getRemovedPiece() != null) {
+//                destination.removePiece();
+//            }
+            //destination.putPiece(redoMove.getMovingPiece());
             undo.push(redoMove);
             return true;
         }

@@ -2,11 +2,16 @@ package Gui;
 
 import Common.*;
 import Pieces.PieceType;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -15,12 +20,25 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import Pieces.Piece;
 import Pieces.PieceColor;
+import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
-import java.util.Stack;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.stream.Stream;
 
 import static Pieces.PieceColor.W;
 
 public class GameNodeController {
+
+    @FXML
+    public Spinner<Integer> fidgetSpinner;
+
+    private Timer autoPlayTimer;
 
     private int turn = 0;
     private boolean clicked = false;
@@ -45,12 +63,16 @@ public class GameNodeController {
     /**
      * Initializes the gameNode controller and creates own game instance.
      * Sets the basic game layout and adds triggers for each tile in board.
-     *
      */
     public void initialize() {
 
         gameBoard = new Board();
         game = GameFactory.createChessGame(gameBoard);
+
+        SpinnerValueFactory<Integer> valueFactory = //
+                new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 50000, 1000);
+
+        fidgetSpinner.setValueFactory(valueFactory);
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -216,17 +238,17 @@ public class GameNodeController {
                 if (n instanceof TilePane) {
                     if (from.getPiece().isValidMovement(from, gameBoard.getTile(i, j), gameBoard.tiles)) {
                         if ((i + j) % 2 == 0) {
-                            if (!gameBoard.getTile(i,j).isEmpty() && gameBoard.getTile(i,j).getPiece().getType() == PieceType.KI) {
+                            if (!gameBoard.getTile(i, j).isEmpty() && gameBoard.getTile(i, j).getPiece().getType() == PieceType.KI) {
                                 continue;
-                            } else if (game.moveCheck(from, gameBoard.getTile(i,j), from.getPiece().getColor())) {
+                            } else if (game.moveCheck(from, gameBoard.getTile(i, j), from.getPiece().getColor())) {
                                 continue;
                             } else {
                                 n.setStyle("-fx-background-color: #e4bf55;");
                             }
                         } else {
-                            if (!gameBoard.getTile(i,j).isEmpty() && gameBoard.getTile(i,j).getPiece().getType() == PieceType.KI) {
+                            if (!gameBoard.getTile(i, j).isEmpty() && gameBoard.getTile(i, j).getPiece().getType() == PieceType.KI) {
                                 continue;
-                            } else if (game.moveCheck(from, gameBoard.getTile(i,j), from.getPiece().getColor())) {
+                            } else if (game.moveCheck(from, gameBoard.getTile(i, j), from.getPiece().getColor())) {
                                 continue;
                             } else {
                                 n.setStyle("-fx-background-color: #c37f21;");
@@ -264,8 +286,8 @@ public class GameNodeController {
 
         gameHistoryContent.getChildren().remove(0, gameHistoryContent.getChildren().size());
 
-        for (int i = 0; i < moves.size(); i+=2) {
-            String str = (i+1) + ". " + moves.elementAt(i).getFrom().toString();
+        for (int i = 0; i < moves.size(); i += 2) {
+            String str = (i + 1) + ". " + moves.elementAt(i).getFrom().toString();
 
             if (moves.elementAt(i).getRemovedPiece() != null)
                 str += "x";
@@ -276,53 +298,252 @@ public class GameNodeController {
                 str += "+";
             }
 
-            if (i+1 < moves.size()) {
-                str += " " + moves.elementAt(i+1).getFrom().toString();
+            if (i + 1 < moves.size()) {
+                str += " " + moves.elementAt(i + 1).getFrom().toString();
 
-                if (moves.elementAt(i+1).getRemovedPiece() != null)
+                if (moves.elementAt(i + 1).getRemovedPiece() != null)
                     str += "x";
 
-                str += "" + moves.elementAt(i+1).getTo().toString();
+                str += "" + moves.elementAt(i + 1).getTo().toString();
 
-                if (moves.elementAt(i+1).isCheck()) {
+                if (moves.elementAt(i + 1).isCheck()) {
                     str += "+";
                 }
             }
 
 
-
             Button button = new Button();
+
+            if (((turn - 1) / 2) == i / 2)
+                button.setStyle("-fx-background-color: #e5792a;");
+
             button.setText(str);
 
             gameHistoryContent.getChildren().add(button);
         }
     }
 
-    public void loadFile() {
+    /**
+     * Shows dialog if the file loading fails
+     */
+    private void failedToLoadFile() {
+        final Stage dialog = new Stage();
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.initOwner(board.getScene().getWindow());
 
+        VBox dialogVbox = new VBox(20);
+        dialogVbox.getChildren().add(new Text("Invalid input file!"));
+        Scene dialogScene = new Scene(dialogVbox, 300, 200);
+        dialog.setScene(dialogScene);
+        dialog.show();
+    }
+
+    /**
+     * 
+     *
+     * @throws FileNotFoundException
+     */
+    public void loadFile() throws FileNotFoundException {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Load game");
+        File file = fileChooser.showOpenDialog(board.getScene().getWindow());
+
+        if (file == null)
+            return;
+
+
+        List<DoubleParsedNotation> movesLikeJagger = new ArrayList<>();
+
+        try (Stream<String> stream = Files.lines(Paths.get(file.getPath()))) {
+            stream.forEach(l -> {
+                try {
+                    movesLikeJagger.add(NotationMoveParser.Parse(l));
+                } catch (Exception e) {
+                    failedToLoadFile();
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            movesLikeJagger.forEach(m -> {
+                Tile from = gameBoard.getTile(m.getWhite().getFromr(), m.getWhite().getFromc());
+                Tile to = gameBoard.getTile(m.getWhite().getTor(), m.getWhite().getToc());
+                game.move(from, to, PieceColor.W);
+
+                if (m.getBlack() != null) {
+                    from = gameBoard.getTile(m.getBlack().getFromr(), m.getBlack().getFromc());
+                    to = gameBoard.getTile(m.getBlack().getTor(), m.getBlack().getToc());
+                    game.move(from, to, PieceColor.B);
+                }
+            });
+        } catch (Exception e) {
+            failedToLoadFile();
+        }
+
+        resetGame();
     }
 
     public void saveFile() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Load game");
+        File file = fileChooser.showSaveDialog(board.getScene().getWindow());
 
-    }
+        if (file == null)
+            return;
 
-    public void autoPlay() {
+        try {
+            Stack<BoardMove> moves = game.getUndo();
+            FileWriter fw = new FileWriter(file.getPath());
 
+            for (int i = 0; i < moves.size(); i += 2) {
+                String str = (i + 2) / 2 + ". " + NotationMoveParser.getSignFromPieceType(moves.elementAt(i).getMovingPiece().getType()) + "" + moves.elementAt(i).getFrom().toString();
+
+                if (moves.elementAt(i).getRemovedPiece() != null)
+                    str += "x";
+
+                str += "" + moves.elementAt(i).getTo().toString();
+
+                if (moves.elementAt(i).isCheck()) {
+                    str += "+";
+                }
+
+                if (i + 1 < moves.size()) {
+                    str += " " + NotationMoveParser.getSignFromPieceType(moves.elementAt(i).getMovingPiece().getType()) + "" + moves.elementAt(i + 1).getFrom().toString();
+
+                    if (moves.elementAt(i + 1).getRemovedPiece() != null)
+                        str += "x";
+
+                    str += "" + moves.elementAt(i + 1).getTo().toString();
+
+                    if (moves.elementAt(i + 1).isCheck()) {
+                        str += "+";
+                    }
+                }
+                fw.write(str + "\r\n");
+            }
+            fw.close();
+        } catch (IOException ignored) {
+
+        }
     }
 
     public void resetGame() {
+        Stack<BoardMove> moves = game.getUndo();
+        turn = moves.size();
 
-    }
+        while (turn > 0) {
+            prevMove();
+        }
 
-    public void pauseAutoPlay() {
-
+        refreshTileColors();
+        refreshHistory();
+        refreshTilePieceGraphic();
     }
 
     public void prevMove() {
+        Stack<BoardMove> moves = game.getUndo();
+
+        if (turn > 0) {
+            turn--;
+
+            BoardMove move = moves.elementAt(turn);
+            move.getFrom().putPiece(move.getMovingPiece());
+            move.getTo().removePiece();
+
+            if (move.getRemovedPiece() != null)
+                move.getTo().putPiece(move.getRemovedPiece());
+
+            refreshTileColors();
+            refreshHistory();
+            refreshTilePieceGraphic();
+        }
 
     }
 
     public void nextMove() {
+        Stack<BoardMove> moves = game.getUndo();
+        if (turn < moves.size()) {
+            BoardMove move = moves.elementAt(turn);
 
+            move.getTo().removePiece();
+            move.getTo().putPiece(move.getMovingPiece());
+            move.getFrom().removePiece();
+
+            turn++;
+
+            refreshTileColors();
+            refreshHistory();
+            refreshTilePieceGraphic();
+        }
+    }
+
+    public void startAutoPlay(ActionEvent actionEvent) {
+        if (autoPlayTimer != null) {
+            return;
+        }
+        autoPlayTimer = new Timer();
+
+        TimerTask autoPlayTimerTask = new TimerTask() {
+            @Override
+            public void run() {
+                nextMoveAutoPlay();
+
+                Stack<BoardMove> moves = game.getUndo();
+                if (turn == moves.size()) {
+                    autoPlayTimer.cancel();
+                    autoPlayTimer = null;
+
+                }
+
+            }
+        };
+
+        autoPlayTimer.scheduleAtFixedRate(autoPlayTimerTask, 0, fidgetSpinner.valueProperty().get());
+    }
+
+    private void nextMoveAutoPlay() {
+        Stack<BoardMove> moves = game.getUndo();
+        if (turn < moves.size()) {
+            BoardMove move = moves.elementAt(turn);
+
+            move.getTo().removePiece();
+            move.getTo().putPiece(move.getMovingPiece());
+            move.getFrom().removePiece();
+
+            turn++;
+
+            Platform.runLater(
+                    () -> {
+                        refreshTileColors();
+                        refreshHistory();
+                        refreshTilePieceGraphic();
+                    }
+            );
+        }
+    }
+
+    public void pauseAutoPlay() {
+        if (autoPlayTimer != null)
+            autoPlayTimer.cancel();
+        autoPlayTimer = null;
+    }
+
+    public void undo() {
+        resetGame();
+
+        game.undo();
+
+        refreshHistory();
+        refreshTilePieceGraphic();
+        refreshTileColors();
+    }
+
+    public void redo() {
+        game.redo();
+        refreshHistory();
+        refreshTilePieceGraphic();
+        refreshTileColors();
     }
 }
