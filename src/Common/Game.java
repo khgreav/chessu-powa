@@ -42,5 +42,7 @@ public interface Game {
      * Returns the undo stack of the game. The stack contains all the moves that happened.
      * @return undo stack
      */
-    Stack<BoardMove> getUndo();
+    Stack<BoardMove> getMoves();
+
+    public void SaveToUndoStack();
 }

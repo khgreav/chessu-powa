@@ -11,8 +11,9 @@ import java.util.Stack;
  */
 public class ChessGame implements Game {
     private Board board;
-    private Stack<BoardMove> undo;
-    private Stack<BoardMove> redo;
+    private Stack<BoardMove> moves;
+    private Stack<Stack<BoardMove>> redo;
+    private Stack<Stack<BoardMove>> undo;
 
     /**
      * Creates a new ChessGame object using a new board.
@@ -20,8 +21,9 @@ public class ChessGame implements Game {
      */
     public ChessGame(Board board) {
         this.board = board;
-        this.undo = new Stack<>();
+        this.moves = new Stack<>();
         this.redo = new Stack<>();
+        this.undo = new Stack<>();
     }
 
     /**
@@ -54,12 +56,16 @@ public class ChessGame implements Game {
     }
 
     /**
-     * Returns the undo stack of the game. The stack contains all the moves that happened.
-     * @return undo stack
+     * Returns the moves stack of the game. The stack contains all the moves that happened.
+     * @return moves stack
      */
     @Override
-    public Stack<BoardMove> getUndo() {
-        return undo;
+    public Stack<BoardMove> getMoves() {
+        return moves;
+    }
+
+    public void SaveToUndoStack() {
+        undo.push(moves);
     }
 
     /**
@@ -105,7 +111,8 @@ public class ChessGame implements Game {
                 from.putPiece(movingPiece);
                 return false;
             }
-            undo.push(new BoardMove(from, to, movingPiece, removedPiece, check(board.tiles, playerTurn)));
+            moves.push(new BoardMove(from, to, movingPiece, removedPiece, check(board.tiles, playerTurn)));
+            SaveToUndoStack();
             return true;
         }
         return false;
@@ -141,29 +148,22 @@ public class ChessGame implements Game {
     }
 
     /**
-     * Performs the undo action and reverts the most recent move made.
-     * @return true if the undo action was performed, otherwise false
+     * Performs the moves action and reverts the most recent move made.
+     * @return true if the moves action was performed, otherwise false
      */
     @Override
     public boolean undo() {
-        if (undo.empty()) {
+        if (moves.empty()) {
             return false;
         } else {
-            BoardMove undoMove = undo.pop();
-            Tile original = board.getTile(undoMove.getFrom().getRow(), undoMove.getFrom().getCol());
-            Tile destination = board.getTile(undoMove.getTo().getRow(), undoMove.getTo().getCol());
-            destination.removePiece();
-            if (undoMove.getRemovedPiece() != null) {
-                destination.putPiece(undoMove.getRemovedPiece());
-            }
-            original.putPiece(undoMove.getMovingPiece());
-            redo.push(undoMove);
+            redo.push(moves);
+            moves = undo.pop();
             return true;
         }
     }
 
     /**
-     * Performs the redo action and reverts the most recent undo action.
+     * Performs the redo action and reverts the most recent moves action.
      * @return true if the redo action was performed, otherwise false
      */
     @Override
@@ -171,15 +171,8 @@ public class ChessGame implements Game {
         if (redo.empty()) {
             return false;
         } else {
-            BoardMove redoMove = redo.pop();
-            Tile original = board.getTile(redoMove.getFrom().getRow(), redoMove.getFrom().getCol());
-            Tile destination = board.getTile(redoMove.getTo().getRow(), redoMove.getTo().getCol());
-//            original.removePiece();
-//            if (redoMove.getRemovedPiece() != null) {
-//                destination.removePiece();
-//            }
-            //destination.putPiece(redoMove.getMovingPiece());
-            undo.push(redoMove);
+            undo.push(moves);
+            moves = redo.pop();
             return true;
         }
     }
