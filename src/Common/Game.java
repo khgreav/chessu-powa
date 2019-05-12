@@ -2,6 +2,7 @@ package Common;
 
 import Pieces.Piece;
 import Pieces.PieceColor;
+import Pieces.PieceType;
 
 import java.util.Stack;
 
@@ -16,7 +17,7 @@ public interface Game {
      * @param playerTurn a color of the player that is making the move
      * @return true if the moving figure can move to the destination tile, otherwise false
      */
-    boolean move(Tile from, Tile to, PieceColor playerTurn);
+    boolean move(Tile from, Tile to, PieceColor playerTurn, PieceType piece);
     /**
      * Performs a fake move to determine whether or not it prevents a check.
      * @param from original tile, one a piece is moving from

@@ -154,7 +154,7 @@ public class GameNodeController {
             markTileColors(lastClickedTile);
         } else {
             if (lastClickedTile != null) {
-                if (game.move(lastClickedTile, clickedTile, PieceColor.values()[turn % 2])) {
+                if (game.move(lastClickedTile, clickedTile, PieceColor.values()[turn % 2], PieceType.P)) {
                     turn++;
                     refreshTilePieceGraphic();
                     refreshTileColors();
@@ -403,12 +403,12 @@ public class GameNodeController {
             movesLikeJagger.forEach(m -> {
                 Tile from = gameBoard.getTile(m.getWhite().getFromr(), m.getWhite().getFromc());
                 Tile to = gameBoard.getTile(m.getWhite().getTor(), m.getWhite().getToc());
-                game.move(from, to, PieceColor.W);
+                game.move(from, to, PieceColor.W, m.getWhite().getType());
 
                 if (m.getBlack() != null) {
                     from = gameBoard.getTile(m.getBlack().getFromr(), m.getBlack().getFromc());
                     to = gameBoard.getTile(m.getBlack().getTor(), m.getBlack().getToc());
-                    game.move(from, to, PieceColor.B);
+                    game.move(from, to, PieceColor.B, m.getBlack().getType());
                 }
             });
         } catch (Exception e) {

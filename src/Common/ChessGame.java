@@ -70,7 +70,22 @@ public class ChessGame implements Game {
      * @return true if the moving figure can move to the destination tile, otherwise false
      */
     @Override
-    public boolean move(Tile from, Tile to, PieceColor playerTurn) {
+    public boolean move(Tile from, Tile to, PieceColor playerTurn, PieceType piece) {
+        if (from == null) {
+            for (int i = 0; i < 8; i++) {
+                for (int j = 0; j < 8; j++) {
+                    if (!board.getTile(i,j).isEmpty() && board.getTile(i,j).getPiece().getType() == piece && board.getTile(i,j).getPiece().getColor() == playerTurn) {
+                        if (board.getTile(i,j).getPiece().isValidMovement(board.getTile(i,j), to, board.tiles)) {
+                            from = board.getTile(i,j);
+                        }
+                    }
+                }
+            }
+            if (from == null) {
+                return false;
+            }
+        }
+
         if (!to.isEmpty() && to.getPiece().getType() == PieceType.KI) {
             return false;
         }
