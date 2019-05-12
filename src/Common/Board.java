@@ -35,6 +35,9 @@ public class Board {
      * @return tile at specified row and column
      */
     public Tile getTile(int row, int col) {
-        return tiles[row][col];
+        if (row >= 0 && row <= 7 && col >= 0 && col <= 7) {
+            return tiles[row][col];
+        }
+        return null;
     }
 }

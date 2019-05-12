@@ -3,7 +3,6 @@ package Gui;
 import Common.*;
 import Pieces.PieceType;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -154,7 +153,7 @@ public class GameNodeController {
             markTileColors(lastClickedTile);
         } else {
             if (lastClickedTile != null) {
-                if (game.move(lastClickedTile, clickedTile, PieceColor.values()[turn % 2])) {
+                if (game.move(lastClickedTile, clickedTile, PieceColor.values()[turn % 2], PieceType.P)) {
                     turn++;
                     refreshTilePieceGraphic();
                     refreshTileColors();
@@ -327,7 +326,7 @@ public class GameNodeController {
      * Appends the list of moves to history.
      */
     private void refreshHistory() {
-        Stack<BoardMove> moves = game.getUndo();
+        Stack<BoardMove> moves = game.getMoves();
 
         gameHistoryContent.getChildren().remove(0, gameHistoryContent.getChildren().size());
 
@@ -416,12 +415,12 @@ public class GameNodeController {
             movesLikeJagger.forEach(m -> {
                 Tile from = gameBoard.getTile(m.getWhite().getFromr(), m.getWhite().getFromc());
                 Tile to = gameBoard.getTile(m.getWhite().getTor(), m.getWhite().getToc());
-                game.move(from, to, PieceColor.W);
+                game.move(from, to, PieceColor.W, m.getWhite().getType());
 
                 if (m.getBlack() != null) {
                     from = gameBoard.getTile(m.getBlack().getFromr(), m.getBlack().getFromc());
                     to = gameBoard.getTile(m.getBlack().getTor(), m.getBlack().getToc());
-                    game.move(from, to, PieceColor.B);
+                    game.move(from, to, PieceColor.B, m.getBlack().getType());
                 }
             });
         } catch (Exception e) {
@@ -443,7 +442,7 @@ public class GameNodeController {
             return;
 
         try {
-            Stack<BoardMove> moves = game.getUndo();
+            Stack<BoardMove> moves = game.getMoves();
             FileWriter fw = new FileWriter(file.getPath());
 
             for (int i = 0; i < moves.size(); i += 2) {
@@ -482,7 +481,7 @@ public class GameNodeController {
      * Resets the game state to turn 1.
      */
     public void resetGame() {
-        Stack<BoardMove> moves = game.getUndo();
+        Stack<BoardMove> moves = game.getMoves();
         turn = moves.size();
 
         while (turn > 0) {
@@ -498,7 +497,7 @@ public class GameNodeController {
      * Goes back one move in history
      */
     public void prevMove() {
-        Stack<BoardMove> moves = game.getUndo();
+        Stack<BoardMove> moves = game.getMoves();
 
         if (turn > 0) {
             turn--;
@@ -521,7 +520,7 @@ public class GameNodeController {
      * Makes one move in history.
      */
     public void nextMove() {
-        Stack<BoardMove> moves = game.getUndo();
+        Stack<BoardMove> moves = game.getMoves();
         if (turn < moves.size()) {
             BoardMove move = moves.elementAt(turn);
 
@@ -552,7 +551,7 @@ public class GameNodeController {
             public void run() {
                 nextMoveAutoPlay();
 
-                Stack<BoardMove> moves = game.getUndo();
+                Stack<BoardMove> moves = game.getMoves();
                 if (turn == moves.size()) {
                     autoPlayTimer.cancel();
                     autoPlayTimer = null;
@@ -569,7 +568,7 @@ public class GameNodeController {
      * Support function for autoplay.
      */
     private void nextMoveAutoPlay() {
-        Stack<BoardMove> moves = game.getUndo();
+        Stack<BoardMove> moves = game.getMoves();
         if (turn < moves.size()) {
             BoardMove move = moves.elementAt(turn);
 
