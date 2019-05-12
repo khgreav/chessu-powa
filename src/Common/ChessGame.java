@@ -84,9 +84,37 @@ public class ChessGame implements Game {
                 to.removePiece();
             }
             to.putPiece(movingPiece);
-            undo.push(new BoardMove(from, to, movingPiece, removedPiece, check(board.tiles, playerTurn), check(board.tiles, otherPlayer)));
+            if (check(board.tiles, otherPlayer)) {
+                to.removePiece();
+                to.putPiece(removedPiece);
+                from.putPiece(movingPiece);
+                return false;
+            }
+            undo.push(new BoardMove(from, to, movingPiece, removedPiece, check(board.tiles, playerTurn)));
             return true;
         }
+        return false;
+    }
+
+    public boolean moveCheck(Tile from, Tile to, PieceColor playerTurn) {
+        PieceColor otherPlayer = (playerTurn == PieceColor.W) ? PieceColor.B : PieceColor.W;
+        Piece movingPiece = from.getPiece();
+        Piece removedPiece = null;
+        from.removePiece();
+        if (!to.isEmpty()) {
+            removedPiece = to.getPiece();
+            to.removePiece();
+        }
+        to.putPiece(movingPiece);
+        if (check(board.tiles, otherPlayer)) {
+            to.removePiece();
+            to.putPiece(removedPiece);
+            from.putPiece(movingPiece);
+            return true;
+        }
+        to.removePiece();
+        to.putPiece(removedPiece);
+        from.putPiece(movingPiece);
         return false;
     }
 

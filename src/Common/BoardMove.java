@@ -11,8 +11,7 @@ public class BoardMove {
     private Tile to;
     private Piece movingPiece;
     private Piece removedPiece;
-    private boolean checkWhite;
-    private boolean checkBlack;
+    private boolean check;
 
     /**
      * Creates a new BoardMove object that stores information about a player's turn.
@@ -20,16 +19,15 @@ public class BoardMove {
      * @param to a tile that a piece is moving to
      * @param movingPiece a piece that moved
      * @param removedPiece a piece that was removed from the game as a result of this move, if any
-     * @param checkBlack specifies if a check is imposed on the black player
-     * @param checkWhite specifies if a check is imposed on the white player
+     * @param check specifies if the move imposes a check
      */
-    public BoardMove(Tile from, Tile to, Piece movingPiece, Piece removedPiece, boolean checkBlack, boolean checkWhite) {
+    public BoardMove(Tile from, Tile to, Piece movingPiece, Piece removedPiece, boolean check) {
         this.from = from;
         this.to = to;
         this.movingPiece = movingPiece;
         this.removedPiece = removedPiece;
-        this.checkBlack = checkBlack;
-        this.checkWhite = checkWhite;
+        this.check = check;
+
     }
 
     /**
@@ -68,15 +66,7 @@ public class BoardMove {
      * Returns a boolean value specifying if a player's turn imposes check on their opponent.
      * @return true if check is imposed on the opponent, otherwise false
      */
-    public boolean isCheckWhite() {
-        return checkWhite;
-    }
-
-    /**
-     * Returns a boolean value specifying if a player's turn imposes check on their opponent.
-     * @return true if check is imposed on the opponent, otherwise false
-     */
-    public boolean isCheckBlack() {
-        return checkBlack;
+    public boolean isCheck() {
+        return check;
     }
 }

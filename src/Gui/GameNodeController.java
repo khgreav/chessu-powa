@@ -218,11 +218,15 @@ public class GameNodeController {
                         if ((i + j) % 2 == 0) {
                             if (!gameBoard.getTile(i,j).isEmpty() && gameBoard.getTile(i,j).getPiece().getType() == PieceType.KI) {
                                 continue;
+                            } else if (game.moveCheck(from, gameBoard.getTile(i,j), from.getPiece().getColor())) {
+                                continue;
                             } else {
                                 n.setStyle("-fx-background-color: #e4bf55;");
                             }
                         } else {
                             if (!gameBoard.getTile(i,j).isEmpty() && gameBoard.getTile(i,j).getPiece().getType() == PieceType.KI) {
+                                continue;
+                            } else if (game.moveCheck(from, gameBoard.getTile(i,j), from.getPiece().getColor())) {
                                 continue;
                             } else {
                                 n.setStyle("-fx-background-color: #c37f21;");
@@ -268,7 +272,7 @@ public class GameNodeController {
 
             str += "" + moves.elementAt(i).getTo().toString();
 
-            if (moves.elementAt(i).isCheckWhite() || moves.elementAt(i).isCheckBlack()) {
+            if (moves.elementAt(i).isCheck()) {
                 str += "+";
             }
 
@@ -280,7 +284,7 @@ public class GameNodeController {
 
                 str += "" + moves.elementAt(i+1).getTo().toString();
 
-                if (moves.elementAt(i+1).isCheckWhite()) {
+                if (moves.elementAt(i+1).isCheck()) {
                     str += "+";
                 }
             }

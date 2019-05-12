@@ -1,5 +1,6 @@
 package Common;
 
+import Pieces.Piece;
 import Pieces.PieceColor;
 
 import java.util.Stack;
@@ -17,6 +18,7 @@ public interface Game {
      */
     boolean move(Tile from, Tile to, PieceColor playerTurn);
 
+    boolean moveCheck(Tile from, Tile to, PieceColor playerTurn);
     /**
      * Performs the undo action and reverts the most recent move made.
      * @return true if the undo action was performed, otherwise false
