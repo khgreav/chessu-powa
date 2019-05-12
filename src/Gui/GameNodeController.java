@@ -372,7 +372,8 @@ public class GameNodeController {
     }
 
     /**
-     * 
+     *  Loads the file and calls the notation parser.
+     *  Tries to play the game.
      *
      * @throws FileNotFoundException
      */
@@ -418,6 +419,9 @@ public class GameNodeController {
         resetGame();
     }
 
+    /**
+     * Saves the game to file
+     */
     public void saveFile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Load game");
@@ -462,6 +466,9 @@ public class GameNodeController {
         }
     }
 
+    /**
+     * Resets the game state to turn 1.
+     */
     public void resetGame() {
         Stack<BoardMove> moves = game.getUndo();
         turn = moves.size();
@@ -475,6 +482,9 @@ public class GameNodeController {
         refreshTilePieceGraphic();
     }
 
+    /**
+     * Goes back one move in history
+     */
     public void prevMove() {
         Stack<BoardMove> moves = game.getUndo();
 
@@ -495,6 +505,9 @@ public class GameNodeController {
 
     }
 
+    /**
+     * Makes one move in history.
+     */
     public void nextMove() {
         Stack<BoardMove> moves = game.getUndo();
         if (turn < moves.size()) {
@@ -512,7 +525,11 @@ public class GameNodeController {
         }
     }
 
-    public void startAutoPlay(ActionEvent actionEvent) {
+    /**
+     * Starts the automatic play.
+     *
+     */
+    public void startAutoPlay() {
         if (autoPlayTimer != null) {
             return;
         }
@@ -536,6 +553,9 @@ public class GameNodeController {
         autoPlayTimer.scheduleAtFixedRate(autoPlayTimerTask, 0, fidgetSpinner.valueProperty().get());
     }
 
+    /**
+     * Support function for autoplay.
+     */
     private void nextMoveAutoPlay() {
         Stack<BoardMove> moves = game.getUndo();
         if (turn < moves.size()) {
@@ -557,12 +577,18 @@ public class GameNodeController {
         }
     }
 
+    /**
+     * Turns off the autoplay.
+     */
     public void pauseAutoPlay() {
         if (autoPlayTimer != null)
             autoPlayTimer.cancel();
         autoPlayTimer = null;
     }
 
+    /**
+     * Removes one move.
+     */
     public void undo() {
         resetGame();
 
@@ -573,6 +599,9 @@ public class GameNodeController {
         refreshTileColors();
     }
 
+    /**
+     * Returns one move from redo stack.
+     */
     public void redo() {
         game.redo();
         refreshHistory();

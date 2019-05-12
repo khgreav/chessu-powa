@@ -2,7 +2,9 @@ package Common;
 
 import Pieces.PieceType;
 
-
+/**
+ * Object to carry parsed infomation.
+ */
 public class ParsedNotation {
     private PieceType type;
     private int fromr;
@@ -10,38 +12,74 @@ public class ParsedNotation {
     private int tor;
     private int toc;
 
+    /**
+     *
+     * @return returns type.
+     */
     public PieceType getType() {
         return type;
     }
 
+    /**
+     *
+     * @return returns from row.
+     */
     public int getFromr() {
         return fromr;
     }
 
+    /**
+     *
+     * @return returns from column.
+     */
     public int getFromc() {
         return fromc;
     }
 
+    /**
+     *
+     * @return returns to row.
+     */
     public int getTor() {
         return tor;
     }
 
+    /**
+     *
+     * @return returns to column.
+     */
     public int getToc() {
         return toc;
     }
 
+    /**
+     *
+     * @return returns if piece was kicked
+     */
     public boolean isKicked() {
         return kicked;
     }
 
+    /**
+     *
+     * @return returns if is check.
+     */
     public boolean isCheck() {
         return check;
     }
 
+    /**
+     *
+     * @return returns if is checkmate.
+     */
     public boolean isCheckmate() {
         return checkmate;
     }
 
+    /**
+     *
+     * @return returns turn value.
+     */
     public int getTurn() {
         return turn;
     }

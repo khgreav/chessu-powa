@@ -5,6 +5,9 @@ import Pieces.PieceColor;
 import Pieces.PieceType;
 import jdk.nashorn.internal.runtime.regexp.joni.Regex;
 
+/**
+ * Class with static function to do the parsing process.
+ */
 public class NotationMoveParser {
     static private char type = ' ';
     static private char fromr = ' ';
@@ -16,6 +19,13 @@ public class NotationMoveParser {
     static private char check = ' ';
     static private char checkmate = ' ';
 
+    /**
+     * Static function for parsing string notation to object notation.
+     *
+     * @param line String line from file.
+     * @return Returns 2 parsed moves.
+     * @throws Exception throws exception if there is wrong format.
+     */
     static public DoubleParsedNotation Parse(String line) throws Exception {
         type = ' ';
         fromr = ' ';
@@ -37,6 +47,15 @@ public class NotationMoveParser {
         EvalNotationToValue(split[1]);
         ParsedNotation white = new ParsedNotation(getType(type),('8' - fromr),(fromc - 'a'),('8' - tor),(toc - 'a'),kicked=='x', check=='+',checkmate=='#',turn);
 
+        type = ' ';
+        fromr = ' ';
+        fromc = ' ';
+        tor = ' ';
+        toc = ' ';
+        kicked = ' ';
+        check = ' ';
+        checkmate = ' ';
+
         ParsedNotation black = null;
         if (split.length > 2) {
             EvalNotationToValue(split[2]);
@@ -46,6 +65,12 @@ public class NotationMoveParser {
         return new DoubleParsedNotation(white, black);
     }
 
+    /**
+     * Function to load the information the variables.
+     *
+     * @param oneMove ParsedNotation of one turn.
+     * @throws Exception Throws exception if there is incorrect line format
+     */
     static private void EvalNotationToValue(String oneMove) throws Exception {
         if (oneMove.matches("[V|J|D|K|S][a-h][1-8][x]?[a-h][1-8][+]?[#]?")) {
             int offset = 0;
@@ -186,6 +211,11 @@ public class NotationMoveParser {
 
     }
 
+    /**
+     * Returns PieceType from char.
+     * @param type char type.
+     * @return returns correct PieceType
+     */
     static private PieceType getType(char type) {
         switch (type) {
             case 'p':
@@ -204,6 +234,12 @@ public class NotationMoveParser {
         return PieceType.P;
     }
 
+    /**
+     * PieceType to char.
+     *
+     * @param type PieceType value.
+     * @return Returns the correct char value of pieceType or space if there is wrong type.
+     */
     static public char getSignFromPieceType(PieceType type) {
         switch (type) {
             case P:
