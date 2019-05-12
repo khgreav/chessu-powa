@@ -268,7 +268,7 @@ public class GameNodeController {
 
             str += "" + moves.elementAt(i).getTo().toString();
 
-            if (moves.elementAt(i).isCheck()) {
+            if (moves.elementAt(i).isCheckWhite() || moves.elementAt(i).isCheckBlack()) {
                 str += "+";
             }
 
@@ -280,7 +280,7 @@ public class GameNodeController {
 
                 str += "" + moves.elementAt(i+1).getTo().toString();
 
-                if (moves.elementAt(i+1).isCheck()) {
+                if (moves.elementAt(i+1).isCheckWhite()) {
                     str += "+";
                 }
             }

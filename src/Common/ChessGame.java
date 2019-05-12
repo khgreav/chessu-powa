@@ -13,7 +13,6 @@ public class ChessGame implements Game {
     private Board board;
     private Stack<BoardMove> undo;
     private Stack<BoardMove> redo;
-    private boolean check;
 
     /**
      * Creates a new ChessGame object using a new board.
@@ -23,7 +22,6 @@ public class ChessGame implements Game {
         this.board = board;
         this.undo = new Stack<>();
         this.redo = new Stack<>();
-        this.check = false;
     }
 
     /**
@@ -76,6 +74,7 @@ public class ChessGame implements Game {
         if (!to.isEmpty() && to.getPiece().getType() == PieceType.KI) {
             return false;
         }
+        PieceColor otherPlayer = (playerTurn == PieceColor.W) ? PieceColor.B : PieceColor.W;
         if (from.getPiece().isValidMovement(from, to, board.tiles)) {
             Piece movingPiece = from.getPiece();
             Piece removedPiece = null;
@@ -85,7 +84,7 @@ public class ChessGame implements Game {
                 to.removePiece();
             }
             to.putPiece(movingPiece);
-            undo.push(new BoardMove(from, to, movingPiece, removedPiece, check(board.tiles, playerTurn)));
+            undo.push(new BoardMove(from, to, movingPiece, removedPiece, check(board.tiles, playerTurn), check(board.tiles, otherPlayer)));
             return true;
         }
         return false;
