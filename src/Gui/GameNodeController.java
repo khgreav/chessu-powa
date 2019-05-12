@@ -101,6 +101,36 @@ public class GameNodeController {
         refreshTilePieceGraphic();
     }
 
+    private boolean isCheckMate(PieceColor playerTurn) {
+        int validMoveCounter = 0;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                Tile currentTile = null;
+                if (!gameBoard.getTile(i,j).isEmpty() && gameBoard.getTile(i,j).getPiece().getColor() == playerTurn) {
+                    currentTile = gameBoard.getTile(i,j);
+                } else {
+                    continue;
+                }
+                for (int k = 0; k < 8; k++) {
+                    for (int l = 0; l < 8; l++) {
+                        if (!gameBoard.getTile(k,l).isEmpty() && gameBoard.getTile(k,l).getPiece().getType() == PieceType.KI) {
+                            continue;
+                        }
+                        if (!currentTile.getPiece().isValidMovement(currentTile, gameBoard.getTile(k,l), gameBoard.tiles)) {
+                            continue;
+                        }
+                        if (game.moveCheck(currentTile, gameBoard.getTile(k,l), currentTile.getPiece().getColor())) {
+                            continue;
+                        } else {
+                            validMoveCounter++;
+                        }
+                    }
+                }
+            }
+        }
+        return (validMoveCounter == 0);
+    }
+
     /**
      * Function for checking which tile was clicked and if there is piece that can move somewhere.
      * If clicked again when there was previous tile successfully selected. Calls Game fucntion move to move it's piece.
@@ -109,6 +139,9 @@ public class GameNodeController {
      * @param c int value of col in grid
      */
     private void MovePiece(int r, int c) {
+        if (isCheckMate(PieceColor.values()[turn % 2])) {
+            System.out.println("Checkmate");
+        }
         Tile clickedTile = gameBoard.getTile(r, c);
         Piece piece = clickedTile.getPiece();
 
