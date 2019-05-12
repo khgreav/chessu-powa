@@ -1,3 +1,8 @@
+/**
+ * Contains enumeration of a chess piece type.
+ * Author(s): Michal Bucher (xbuche01), Karel Hanák (xhanak34)
+ */
+
 package Pieces;
 
 /**

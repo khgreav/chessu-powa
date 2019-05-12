@@ -1,3 +1,8 @@
+/**
+ * Contains implementation of a game node controller.
+ * Author(s): Michal Bucher (xbuche01), Karel Hanák (xhanak34)
+ */
+
 package Gui;
 
 import Common.*;
@@ -32,10 +37,13 @@ import java.util.stream.Stream;
 
 import static Pieces.PieceColor.W;
 
+/**
+ * GameNodeController represents a controller that handles instances of a game.
+ */
 public class GameNodeController {
 
     @FXML
-    public Spinner<Integer> fidgetSpinner;
+    public Spinner<Integer> autoPlaySpeedSpinner;
 
     private Timer autoPlayTimer;
 
@@ -71,7 +79,7 @@ public class GameNodeController {
         SpinnerValueFactory<Integer> valueFactory = //
                 new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 50000, 1000);
 
-        fidgetSpinner.setValueFactory(valueFactory);
+        autoPlaySpeedSpinner.setValueFactory(valueFactory);
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -106,7 +114,7 @@ public class GameNodeController {
      * @param playerTurn Player's turn color.
      * @return true if there is Checkmate otherwise returns false.
      */
-    private boolean isCheckMate(PieceColor playerTurn) {
+    public boolean isCheckMate(PieceColor playerTurn) {
         int validMoveCounter = 0;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -137,13 +145,13 @@ public class GameNodeController {
     }
 
     /**
-     * Function for checking which tile was clicked and if there is piece that can move somewhere.
-     * If clicked again when there was previous tile successfully selected. Calls Game fucntion move to move it's piece.
-     *
-     * @param r int value of row in grid
-     * @param c int value of col in grid
+     * Checks which tile on the board was selected and locates a piece that can move to another tile if there is one.
+     * Once the first tile is selected, the player can then select a second tile to attempt to move a piece on from the first selected tile.
+     * If a tile with a piece of the same color is selected, the function considers it a different piece to move.
+     * @param r integer value of row in grid
+     * @param c integer value of col in grid
      */
-    private void MovePiece(int r, int c) {
+    public void MovePiece(int r, int c) {
         if (isCheckMate(PieceColor.values()[turn % 2])) {
             winNotice();
         }
@@ -175,7 +183,7 @@ public class GameNodeController {
     /**
      * Notifies players if there is checkmate.
      */
-    private void winNotice() {
+    public void winNotice() {
         final Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(board.getScene().getWindow());
@@ -188,27 +196,26 @@ public class GameNodeController {
     }
 
     /**
-     * Simple function to get the correct image. For piece type and color.
+     * Simple function to load image according to the color and type of a piece.
      *
-     * @param piece Piece value for getting the image.
-     * @return Returns image of piece.
+     * @param piece chess piece
+     * @return image corresponding to the piece type and color
      */
-    private Image getPieceImage(Piece piece) {
-
+    public Image getPieceImage(Piece piece) {
         if (piece.getColor() == W) {
             switch (piece.getType()) {
                 case P:
-                    return new Image(getClass().getResourceAsStream("PiecePictures/pawn_white.png"));
+                    return new Image(getClass().getResourceAsStream("/pawn_white.png"));
                 case R:
-                    return new Image(getClass().getResourceAsStream("PiecePictures/rook_white.png"));
+                    return new Image(getClass().getResourceAsStream("/rook_white.png"));
                 case B:
-                    return new Image(getClass().getResourceAsStream("PiecePictures/bishop_white.png"));
+                    return new Image(getClass().getResourceAsStream("/bishop_white.png"));
                 case KN:
-                    return new Image(getClass().getResourceAsStream("PiecePictures/knight_white.png"));
+                    return new Image(getClass().getResourceAsStream("/knight_white.png"));
                 case Q:
-                    return new Image(getClass().getResourceAsStream("PiecePictures/queen_white.png"));
+                    return new Image(getClass().getResourceAsStream("/queen_white.png"));
                 case KI:
-                    return new Image(getClass().getResourceAsStream("PiecePictures/king_white.png"));
+                    return new Image(getClass().getResourceAsStream("/king_white.png"));
 
                 default:
                     return null;
@@ -217,17 +224,17 @@ public class GameNodeController {
         } else {
             switch (piece.getType()) {
                 case P:
-                    return new Image(getClass().getResourceAsStream("PiecePictures/pawn_black.png"));
+                    return new Image(getClass().getResourceAsStream("/pawn_black.png"));
                 case R:
-                    return new Image(getClass().getResourceAsStream("PiecePictures/rook_black.png"));
+                    return new Image(getClass().getResourceAsStream("/rook_black.png"));
                 case B:
-                    return new Image(getClass().getResourceAsStream("PiecePictures/bishop_black.png"));
+                    return new Image(getClass().getResourceAsStream("/bishop_black.png"));
                 case KN:
-                    return new Image(getClass().getResourceAsStream("PiecePictures/knight_black.png"));
+                    return new Image(getClass().getResourceAsStream("/knight_black.png"));
                 case Q:
-                    return new Image(getClass().getResourceAsStream("PiecePictures/queen_black.png"));
+                    return new Image(getClass().getResourceAsStream("/queen_black.png"));
                 case KI:
-                    return new Image(getClass().getResourceAsStream("PiecePictures/king_black.png"));
+                    return new Image(getClass().getResourceAsStream("/king_black.png"));
 
                 default:
                     return null;
@@ -238,9 +245,9 @@ public class GameNodeController {
     }
 
     /**
-     * Sets the picture according to piece type and color for each tile.
+     * Sets image according to piece type and color for each tile.
      */
-    private void refreshTilePieceGraphic() {
+    public void refreshTilePieceGraphic() {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 Node n = board.getChildren().get(i * 8 + j);
@@ -285,7 +292,7 @@ public class GameNodeController {
      *
      * @param from Starting tile.
      */
-    private void markTileColors(Tile from) {
+    public void markTileColors(Tile from) {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 Node n = board.getChildren().get(i * 8 + j);
@@ -317,7 +324,7 @@ public class GameNodeController {
     /**
      * Sets the basic tile colors.
      */
-    private void refreshTileColors() {
+    public void refreshTileColors() {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 Node n = board.getChildren().get(i * 8 + j);
@@ -335,7 +342,7 @@ public class GameNodeController {
     /**
      * Appends the list of moves to history.
      */
-    private void refreshHistory() {
+    public void refreshHistory() {
         Stack<BoardMove> moves = game.getMoves();
 
         gameHistoryContent.getChildren().remove(0, gameHistoryContent.getChildren().size());
@@ -404,7 +411,7 @@ public class GameNodeController {
     /**
      * Shows dialog if the file loading fails
      */
-    private void failedToLoadFile() {
+    public void failedToLoadFile() {
         final Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(board.getScene().getWindow());
@@ -418,9 +425,9 @@ public class GameNodeController {
 
     /**
      *  Loads the file and calls the notation parser.
-     *  Tries to play the game.
+     *  Attepts to play a game based ont he loaded notation.
      *
-     * @throws FileNotFoundException
+     * @throws FileNotFoundException if a specified file cannot be found or opened
      */
     public void loadFile() throws FileNotFoundException {
         FileChooser fileChooser = new FileChooser();
@@ -430,13 +437,12 @@ public class GameNodeController {
         if (file == null)
             return;
 
-
-        List<DoubleParsedNotation> movesLikeJagger = new ArrayList<>();
+        List<DoubleParsedNotation> turnList = new ArrayList<>();
 
         try (Stream<String> stream = Files.lines(Paths.get(file.getPath()))) {
             stream.forEach(l -> {
                 try {
-                    movesLikeJagger.add(NotationMoveParser.Parse(l));
+                    turnList.add(NotationMoveParser.Parse(l));
                 } catch (Exception e) {
                     failedToLoadFile();
                 }
@@ -446,7 +452,7 @@ public class GameNodeController {
         }
 
         try {
-            movesLikeJagger.forEach(m -> {
+            turnList.forEach(m -> {
                 Tile from = gameBoard.getTile(m.getWhite().getFromr(), m.getWhite().getFromc());
                 Tile to = gameBoard.getTile(m.getWhite().getTor(), m.getWhite().getToc());
                 game.autoMove(from, to, PieceColor.W, m.getWhite().getType());
@@ -527,7 +533,7 @@ public class GameNodeController {
     }
 
     /**
-     * Goes back one move in history
+     * Reverts the latest turn.
      */
     public void prevMove() {
         Stack<BoardMove> moves = game.getMoves();
@@ -550,7 +556,7 @@ public class GameNodeController {
     }
 
     /**
-     * Makes one move in history.
+     * Executes a move from the move history.
      */
     public void nextMove() {
         Stack<BoardMove> moves = game.getMoves();
@@ -570,8 +576,7 @@ public class GameNodeController {
     }
 
     /**
-     * Starts the automatic play.
-     *
+     * Starts the autoplay feature.
      */
     public void startAutoPlay() {
         if (autoPlayTimer != null) {
@@ -594,13 +599,13 @@ public class GameNodeController {
             }
         };
 
-        autoPlayTimer.scheduleAtFixedRate(autoPlayTimerTask, 0, fidgetSpinner.valueProperty().get());
+        autoPlayTimer.scheduleAtFixedRate(autoPlayTimerTask, 0, autoPlaySpeedSpinner.valueProperty().get());
     }
 
     /**
      * Support function for autoplay.
      */
-    private void nextMoveAutoPlay() {
+    public void nextMoveAutoPlay() {
         Stack<BoardMove> moves = game.getMoves();
         if (turn < moves.size()) {
             BoardMove move = moves.elementAt(turn);
@@ -622,7 +627,7 @@ public class GameNodeController {
     }
 
     /**
-     * Turns off the autoplay.
+     * Pauses the autoplay feature.
      */
     public void pauseAutoPlay() {
         if (autoPlayTimer != null)

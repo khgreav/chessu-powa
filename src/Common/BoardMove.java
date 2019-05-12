@@ -1,3 +1,8 @@
+/**
+ * Contains implementation of a chess move container, that stores information about a single move.
+ * Author(s): Michal Bucher (xbuche01), Karel Hanák (xhanak34)
+ */
+
 package Common;
 
 import Pieces.Piece;

@@ -161,7 +161,7 @@
                    <Button mnemonicParsing="false" onAction="#resetGame" prefHeight="97.0" prefWidth="143.0" text="Reset Game" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                    <Button mnemonicParsing="false" onAction="#undo" prefHeight="97.0" prefWidth="143.0" text="Undo" GridPane.columnIndex="4" GridPane.rowIndex="2" />
                    <Button mnemonicParsing="false" onAction="#redo" prefHeight="97.0" prefWidth="143.0" text="Redo" GridPane.columnIndex="5" GridPane.rowIndex="2" />
-                  <Spinner fx:id="fidgetSpinner" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Spinner fx:id="autoPlaySpeedSpinner" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>
             </GridPane>
             </children>

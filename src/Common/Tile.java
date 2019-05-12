@@ -1,7 +1,15 @@
+/**
+ * Contains interface for a board tile class.
+ * Author(s): Michal Bucher (xbuche01), Karel Hanák (xhanak34)
+ */
+
 package Common;
 
 import Pieces.Piece;
 
+/**
+ * Interface for a board tile class.
+ */
 public interface Tile {
 
     /**

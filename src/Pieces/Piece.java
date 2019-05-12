@@ -1,3 +1,8 @@
+/**
+ * Contains interface for chess piece classes.
+ * Author(s): Michal Bucher (xbuche01), Karel Hanák (xhanak34)
+ */
+
 package Pieces;
 
 import Common.Tile;

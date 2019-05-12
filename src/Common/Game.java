@@ -1,3 +1,8 @@
+/**
+ * Contains interface for a game class.
+ * Author(s): Michal Bucher (xbuche01), Karel Hanák (xhanak34)
+ */
+
 package Common;
 
 import Pieces.Piece;
@@ -19,6 +24,14 @@ public interface Game {
      */
     boolean move(Tile from, Tile to, PieceColor playerTurn, PieceType piece);
 
+    /**
+     * Performs a move on the board if the move is possible, used for autoplay.
+     * @param from original tile, one that a piece is moving from
+     * @param to destination tile, one that a piece is moving to
+     * @param playerTurn a color of the player that is making the move
+     * @param piece chess piece type, this attribute is used for short notation
+     * @return true if the moving piece can move to the destination tile, otherwise false
+     */
     boolean autoMove(Tile from, Tile to, PieceColor playerTurn, PieceType piece);
 
     /**
@@ -47,7 +60,14 @@ public interface Game {
      */
     Stack<BoardMove> getMoves();
 
+    /**
+     * Stores current stack of moves.
+     */
     void SaveToUndoStack();
 
+    /**
+     * Removes moves after specified index from the move stack.
+     * @param index index of a move
+     */
     void TrimMoves(int index);
 }

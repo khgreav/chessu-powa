@@ -1,3 +1,8 @@
+/**
+ * Contains implementation of a chess board.
+ * Author(s): Michal Bucher (xbuche01), Karel Hanák (xhanak34)
+ */
+
 package Common;
 
 /**

@@ -1,3 +1,8 @@
+/**
+ * Contains implementation of a queen chess piece.
+ * Author(s): Michal Bucher (xbuche01), Karel Hanák (xhanak34)
+ */
+
 package Pieces;
 
 import Common.Tile;

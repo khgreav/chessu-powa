@@ -1,0 +1,24 @@
+<project name="IJA Projekt 2018/2019" basedir=".">
+    <target name="compile">
+        <copy file="src/Gui/GameNode.fxml" todir="build/Gui"/>
+        <copy file="src/Gui/MainWindow.fxml" todir="build/Gui"/>
+        <javac srcdir="src" destdir="build"/>
+        <jar destfile="dest/ija-app.jar" basedir="build">
+            <fileset dir="lib"/>
+            <manifest>
+                <attribute name="Main-class" value="Gui.Chess"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="run">
+        <java jar="dest/ija-app.jar" fork="true"/>
+    </target>
+
+    <target name="clean">
+        <delete includeEmptyDirs="true">
+            <fileset dir="build" includes="**/*"/>
+            <fileset dir="dest" includes="**/*"/>
+        </delete>
+    </target>
+</project>

@@ -1,16 +1,21 @@
+/**
+ * Contains implementation of a parsed notation object. Each object stores information about both moves in a single round.
+ * Author(s): Michal Bucher (xbuche01), Karel Hanák (xhanak34)
+ */
+
 package Common;
 
 /**
- * Helper class for parser.
+ * Represents a single round of the game.
  */
 public class DoubleParsedNotation {
     public ParsedNotation white;
     public ParsedNotation black;
 
     /**
-     *
-     * @param white white's parsed turn.
-     * @param black black's parsed turn.
+     * Creates a new DoubleParsedNotation object.
+     * @param white white player's parsed turn.
+     * @param black black player's parsed turn.
      */
     public DoubleParsedNotation(ParsedNotation white, ParsedNotation black) {
         this.white = white;
@@ -18,18 +23,18 @@ public class DoubleParsedNotation {
     }
 
     /**
-     * Gets the White turn notation.
+     * Returns the notation object of white player's turn.
      *
-     * @return ParserNotation of white player.
+     * @return Parsed turn notation of white player.
      */
     public ParsedNotation getWhite() {
         return white;
     }
 
     /**
-     * Gets the black turn notation.
+     * Returns the notation object of black player's turn.
      *
-     * @return ParserNotation of black player.
+     * @return Parsed turn notation of black player.
      */
     public ParsedNotation getBlack() {
         return black;

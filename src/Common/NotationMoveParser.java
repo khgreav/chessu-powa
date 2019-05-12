@@ -1,9 +1,11 @@
+/**
+ * Contains implementation of a move parser, a notation is parsed into a move which is then stored in a DoubleParsedNotation object.
+ * Author(s): Michal Bucher (xbuche01), Karel Hanák (xhanak34)
+ */
+
 package Common;
 
-import Pieces.Pawn;
-import Pieces.PieceColor;
 import Pieces.PieceType;
-import jdk.nashorn.internal.runtime.regexp.joni.Regex;
 
 /**
  * Class with static function to do the parsing process.
@@ -21,10 +23,9 @@ public class NotationMoveParser {
 
     /**
      * Static function for parsing string notation to object notation.
-     *
-     * @param line String line from file.
-     * @return Returns 2 parsed moves.
-     * @throws Exception throws exception if there is wrong format.
+     * @param line String line from file
+     * @return Returns 2 parsed moves
+     * @throws Exception throws exception if there is wrong format
      */
     static public DoubleParsedNotation Parse(String line) throws Exception {
         type = ' ';
@@ -66,9 +67,8 @@ public class NotationMoveParser {
     }
 
     /**
-     * Function to load the information the variables.
-     *
-     * @param oneMove ParsedNotation of one turn.
+     * Parses the loaded notation data and assigns processed data to their respective containers.
+     * @param oneMove ParsedNotation of a single turn turn
      * @throws Exception Throws exception if there is incorrect line format
      */
     static private void EvalNotationToValue(String oneMove) throws Exception {
@@ -212,8 +212,8 @@ public class NotationMoveParser {
     }
 
     /**
-     * Returns PieceType from char.
-     * @param type char type.
+     * Returns PieceType from char according to the piece identifier.
+     * @param type char type
      * @return returns correct PieceType
      */
     static private PieceType getType(char type) {
@@ -235,10 +235,10 @@ public class NotationMoveParser {
     }
 
     /**
-     * PieceType to char.
+     * Converts a PieceType value into char variable.
      *
-     * @param type PieceType value.
-     * @return Returns the correct char value of pieceType or space if there is wrong type.
+     * @param type PieceType value
+     * @return  char value of pieceType or space if the specified type is unknown
      */
     static public char getSignFromPieceType(PieceType type) {
         switch (type) {

@@ -1,3 +1,8 @@
+/**
+ * Contains implementation of a chess game instance.
+ * Author(s): Michal Bucher (xbuche01), Karel Hanák (xhanak34)
+ */
+
 package Common;
 
 import Pieces.Piece;
@@ -67,10 +72,17 @@ public class ChessGame implements Game {
         return moves;
     }
 
+    /**
+     * Stores current stack of moves.
+     */
     public void SaveToUndoStack() {
         undo.push((Stack<BoardMove>) moves.clone());
     }
 
+    /**
+     * Removes moves after specified index from the move stack.
+     * @param index index of a move
+     */
     @Override
     public void TrimMoves(int index) {
         int max = moves.size()-2;
@@ -82,10 +94,10 @@ public class ChessGame implements Game {
 
     /**
      * Performs a move on the board if the move is possible.
-     * @param from original tile, one that a figure is moving from
-     * @param to destination tile, one that a figure is moving to
+     * @param from original tile, one that a piece is moving from
+     * @param to destination tile, one that a piece is moving to
      * @param playerTurn a color of the player that is making the move
-     * @return true if the moving figure can move to the destination tile, otherwise false
+     * @return true if the moving piece can move to the destination tile, otherwise false
      */
     @Override
     public boolean move(Tile from, Tile to, PieceColor playerTurn, PieceType piece) {
@@ -94,6 +106,14 @@ public class ChessGame implements Game {
         return ret;
     }
 
+    /**
+     * Performs a move on the board if the move is possible, used for autoplay.
+     * @param from original tile, one that a piece is moving from
+     * @param to destination tile, one that a piece is moving to
+     * @param playerTurn a color of the player that is making the move
+     * @param piece chess piece type, this attribute is used for short notation
+     * @return true if the moving piece can move to the destination tile, otherwise false
+     */
     @Override
     public boolean autoMove(Tile from, Tile to, PieceColor playerTurn, PieceType piece) {
         if (from == null) {
@@ -167,7 +187,7 @@ public class ChessGame implements Game {
     }
 
     /**
-     * Performs the moves action and reverts the most recent move made.
+     * Performs the undo action and reverts most recent changes in move stack.
      * @return true if the moves action was performed, otherwise false
      */
     @Override
@@ -182,7 +202,7 @@ public class ChessGame implements Game {
     }
 
     /**
-     * Performs the redo action and reverts the most recent moves action.
+     * Performs the redo action and reverts the most recent changes in move stack.
      * @return true if the redo action was performed, otherwise false
      */
     @Override
