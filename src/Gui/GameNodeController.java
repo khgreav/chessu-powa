@@ -1,6 +1,7 @@
 package Gui;
 
 import Common.*;
+import Pieces.PieceType;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -215,9 +216,17 @@ public class GameNodeController {
                 if (n instanceof TilePane) {
                     if (from.getPiece().isValidMovement(from, gameBoard.getTile(i, j), gameBoard.tiles)) {
                         if ((i + j) % 2 == 0) {
-                            n.setStyle("-fx-background-color: #e4bf55;");
+                            if (!gameBoard.getTile(i,j).isEmpty() && gameBoard.getTile(i,j).getPiece().getType() == PieceType.KI) {
+                                continue;
+                            } else {
+                                n.setStyle("-fx-background-color: #e4bf55;");
+                            }
                         } else {
-                            n.setStyle("-fx-background-color: #c37f21;");
+                            if (!gameBoard.getTile(i,j).isEmpty() && gameBoard.getTile(i,j).getPiece().getType() == PieceType.KI) {
+                                continue;
+                            } else {
+                                n.setStyle("-fx-background-color: #c37f21;");
+                            }
                         }
                     }
                 }
