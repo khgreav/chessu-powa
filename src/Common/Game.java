@@ -17,7 +17,13 @@ public interface Game {
      * @return true if the moving figure can move to the destination tile, otherwise false
      */
     boolean move(Tile from, Tile to, PieceColor playerTurn);
-
+    /**
+     * Performs a fake move to determine whether or not it prevents a check.
+     * @param from original tile, one a piece is moving from
+     * @param to destination tile, one a piece is moving to
+     * @param playerTurn player that takes their turn
+     * @return true if a player is still in check after performing the move, otherwise false
+     */
     boolean moveCheck(Tile from, Tile to, PieceColor playerTurn);
     /**
      * Performs the undo action and reverts the most recent move made.
