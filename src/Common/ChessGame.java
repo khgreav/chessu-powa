@@ -137,11 +137,11 @@ public class ChessGame implements Game {
             BoardMove undoMove = undo.pop();
             Tile original = board.getTile(undoMove.getFrom().getRow(), undoMove.getFrom().getCol());
             Tile destination = board.getTile(undoMove.getTo().getRow(), undoMove.getTo().getCol());
-            destination.removePiece();
-            if (undoMove.getRemovedPiece() != null) {
-                destination.putPiece(undoMove.getRemovedPiece());
-            }
-            original.putPiece(undoMove.getMovingPiece());
+//            destination.removePiece();
+//            if (undoMove.getRemovedPiece() != null) {
+//                destination.putPiece(undoMove.getRemovedPiece());
+//            }
+//            original.putPiece(undoMove.getMovingPiece());
             redo.push(undoMove);
             return true;
         }

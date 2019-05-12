@@ -140,7 +140,7 @@ public class GameNodeController {
      */
     private void MovePiece(int r, int c) {
         if (isCheckMate(PieceColor.values()[turn % 2])) {
-            System.out.println("Checkmate");
+            winNotice();
         }
         Tile clickedTile = gameBoard.getTile(r, c);
         Piece piece = clickedTile.getPiece();
@@ -164,6 +164,18 @@ public class GameNodeController {
 
             lastClickedTile = null;
         }
+    }
+
+    private void winNotice() {
+        final Stage dialog = new Stage();
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.initOwner(board.getScene().getWindow());
+
+        VBox dialogVbox = new VBox(20);
+        dialogVbox.getChildren().add(new Text("Checkmate!"));
+        Scene dialogScene = new Scene(dialogVbox, 100, 100);
+        dialog.setScene(dialogScene);
+        dialog.show();
     }
 
     /**
@@ -320,7 +332,7 @@ public class GameNodeController {
         gameHistoryContent.getChildren().remove(0, gameHistoryContent.getChildren().size());
 
         for (int i = 0; i < moves.size(); i += 2) {
-            String str = (i + 1) + ". " + moves.elementAt(i).getFrom().toString();
+            String str = (i + 2)/2 + ". " + NotationMoveParser.getSignFromPieceType(moves.elementAt(i).getMovingPiece().getType()) + "" +moves.elementAt(i).getFrom().toString();
 
             if (moves.elementAt(i).getRemovedPiece() != null)
                 str += "x";
@@ -332,7 +344,7 @@ public class GameNodeController {
             }
 
             if (i + 1 < moves.size()) {
-                str += " " + moves.elementAt(i + 1).getFrom().toString();
+                str += " " + NotationMoveParser.getSignFromPieceType(moves.elementAt(i + 1).getMovingPiece().getType()) + "" + moves.elementAt(i + 1).getFrom().toString();
 
                 if (moves.elementAt(i + 1).getRemovedPiece() != null)
                     str += "x";
@@ -447,7 +459,7 @@ public class GameNodeController {
                 }
 
                 if (i + 1 < moves.size()) {
-                    str += " " + NotationMoveParser.getSignFromPieceType(moves.elementAt(i).getMovingPiece().getType()) + "" + moves.elementAt(i + 1).getFrom().toString();
+                    str += " " + NotationMoveParser.getSignFromPieceType(moves.elementAt(i + 1).getMovingPiece().getType()) + "" + moves.elementAt(i + 1).getFrom().toString();
 
                     if (moves.elementAt(i + 1).getRemovedPiece() != null)
                         str += "x";
