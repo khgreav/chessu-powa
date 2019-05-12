@@ -18,6 +18,9 @@ public interface Game {
      * @return true if the moving figure can move to the destination tile, otherwise false
      */
     boolean move(Tile from, Tile to, PieceColor playerTurn, PieceType piece);
+
+    boolean autoMove(Tile from, Tile to, PieceColor playerTurn, PieceType piece);
+
     /**
      * Performs a fake move to determine whether or not it prevents a check.
      * @param from original tile, one a piece is moving from
@@ -44,5 +47,7 @@ public interface Game {
      */
     Stack<BoardMove> getMoves();
 
-    public void SaveToUndoStack();
+    void SaveToUndoStack();
+
+    void TrimMoves(int index);
 }

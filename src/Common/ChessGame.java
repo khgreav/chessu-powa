@@ -24,6 +24,9 @@ public class ChessGame implements Game {
         this.moves = new Stack<>();
         this.redo = new Stack<>();
         this.undo = new Stack<>();
+
+        this.redo.push((Stack<BoardMove>) moves.clone());
+        this.undo.push((Stack<BoardMove>) moves.clone());
     }
 
     /**
@@ -65,7 +68,16 @@ public class ChessGame implements Game {
     }
 
     public void SaveToUndoStack() {
-        undo.push(moves);
+        undo.push((Stack<BoardMove>) moves.clone());
+    }
+
+    @Override
+    public void TrimMoves(int index) {
+        int max = moves.size()-2;
+        while (index <= max) {
+            moves.remove(index);
+            max--;
+        }
     }
 
     /**
@@ -77,6 +89,13 @@ public class ChessGame implements Game {
      */
     @Override
     public boolean move(Tile from, Tile to, PieceColor playerTurn, PieceType piece) {
+        SaveToUndoStack();
+        boolean ret =  autoMove(from, to, playerTurn, piece);
+        return ret;
+    }
+
+    @Override
+    public boolean autoMove(Tile from, Tile to, PieceColor playerTurn, PieceType piece) {
         if (from == null) {
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
@@ -112,7 +131,7 @@ public class ChessGame implements Game {
                 return false;
             }
             moves.push(new BoardMove(from, to, movingPiece, removedPiece, check(board.tiles, playerTurn)));
-            SaveToUndoStack();
+
             return true;
         }
         return false;
@@ -153,10 +172,10 @@ public class ChessGame implements Game {
      */
     @Override
     public boolean undo() {
-        if (moves.empty()) {
+        if (undo.empty()) {
             return false;
         } else {
-            redo.push(moves);
+            redo.push((Stack<BoardMove>) moves.clone());
             moves = undo.pop();
             return true;
         }
@@ -171,7 +190,7 @@ public class ChessGame implements Game {
         if (redo.empty()) {
             return false;
         } else {
-            undo.push(moves);
+            undo.push((Stack<BoardMove>) moves.clone());
             moves = redo.pop();
             return true;
         }

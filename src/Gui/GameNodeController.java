@@ -100,6 +100,12 @@ public class GameNodeController {
         refreshTilePieceGraphic();
     }
 
+    /**
+     * Checks for checkmate.
+     *
+     * @param playerTurn Player's turn color.
+     * @return true if there is Checkmate otherwise returns false.
+     */
     private boolean isCheckMate(PieceColor playerTurn) {
         int validMoveCounter = 0;
         for (int i = 0; i < 8; i++) {
@@ -154,6 +160,7 @@ public class GameNodeController {
         } else {
             if (lastClickedTile != null) {
                 if (game.move(lastClickedTile, clickedTile, PieceColor.values()[turn % 2], PieceType.P)) {
+                    game.TrimMoves(turn);
                     turn++;
                     refreshTilePieceGraphic();
                     refreshTileColors();
@@ -165,6 +172,9 @@ public class GameNodeController {
         }
     }
 
+    /**
+     * Notifies players if there is checkmate.
+     */
     private void winNotice() {
         final Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
@@ -358,6 +368,30 @@ public class GameNodeController {
 
             Button button = new Button();
 
+            button.setPrefWidth(210);
+
+            final int fakeTurn = i+2;
+            button.setOnAction(event -> {
+                resetGame();
+                turn = fakeTurn;
+
+                int lambdaTurn = 0;
+
+                while (lambdaTurn < turn) {
+                    if (turn < moves.size()) {
+                        BoardMove move = moves.elementAt(lambdaTurn);
+                        move.getTo().removePiece();
+                        move.getTo().putPiece(move.getMovingPiece());
+                        move.getFrom().removePiece();
+                        lambdaTurn++;
+                    }
+                }
+
+                refreshHistory();
+                refreshTilePieceGraphic();
+                refreshTileColors();
+            });
+
             if (((turn - 1) / 2) == i / 2)
                 button.setStyle("-fx-background-color: #e5792a;");
 
@@ -415,18 +449,17 @@ public class GameNodeController {
             movesLikeJagger.forEach(m -> {
                 Tile from = gameBoard.getTile(m.getWhite().getFromr(), m.getWhite().getFromc());
                 Tile to = gameBoard.getTile(m.getWhite().getTor(), m.getWhite().getToc());
-                game.move(from, to, PieceColor.W, m.getWhite().getType());
+                game.autoMove(from, to, PieceColor.W, m.getWhite().getType());
 
                 if (m.getBlack() != null) {
                     from = gameBoard.getTile(m.getBlack().getFromr(), m.getBlack().getFromc());
                     to = gameBoard.getTile(m.getBlack().getTor(), m.getBlack().getToc());
-                    game.move(from, to, PieceColor.B, m.getBlack().getType());
+                    game.autoMove(from, to, PieceColor.B, m.getBlack().getType());
                 }
             });
         } catch (Exception e) {
             failedToLoadFile();
         }
-
         resetGame();
     }
 
