@@ -11,4 +11,5 @@ Aplikace Chess je hra šachy napsaná v programovacím jazyce Java. Aplikace nab
 -automatické přehrávání partií
 -nastavení rychlosti automatického přehrávání
 -manuální hra
--undo a redo
+-undo a redo na seznamech tahů
+-vrácení zpět o tah a posunutí dopředu o tah
