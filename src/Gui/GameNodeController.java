@@ -81,7 +81,6 @@ public class GameNodeController {
 
     private boolean isCheckMate(PieceColor playerTurn) {
         int validMoveCounter = 0;
-        PieceColor otherPlayer = (playerTurn == PieceColor.W) ? PieceColor.B : PieceColor.W;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 Tile currentTile = null;
